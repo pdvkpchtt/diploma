@@ -1,27 +1,145 @@
+@import url("https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  /* --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255; */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
+    /* --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0; */
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  font-family: "Golos Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: -webkit-fill-available;
+  -webkit-tap-highlight-color: transparent; /* remove blue bg on click */
+  /* color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+}
+
+@media (hover: hover) {
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 9999px;
+    background-color: #dcdcdc;
+  }
+}
+
+@media (hover: hover) {
+  .hideScrollbarNavMobile {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .hideScrollbarNavMobile::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.hideScrollbarNav {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.hideScrollbarNav::-webkit-scrollbar {
+  display: none;
+}
+
+/* .theCalcDiv {
+  max-height: -webkit-fill-available;
+  max-height: -moz-calc(100vh - 194.3px);
+  max-height: -webkit-calc(100vh - 194.3px);
+  max-height: calc(100vh - 194.3px);
+} */
+
+.holder:empty:before {
+  content: attr(placeholder);
+  color: #b0b0b0;
+  display: block;
+}
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.Toastify__close-button {
+  display: none;
+}
+
+.svg-pi-wrapper {
+  position: relative;
+}
+
+.svg-pi {
+  transform: rotate(-90deg); /* Fix the orientation */
+}
+
+/* Animated spinner version */
+.svg-pi-indicator--spinner {
+  animation: spinner 0.75s linear infinite;
+  transform-origin: center;
+}
+
+.svg-pi-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.svg-pi-label__loading {
+  opacity: 0.5;
+  font-size: 0.75em;
+}
+
+.svg-pi-label__progress {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.svg-pi-label__loading,
+.svg-pi-label__progress {
+  display: block;
+}
+
+/* Spinner animation */
+@keyframes spinner {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

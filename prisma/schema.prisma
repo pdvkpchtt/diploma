@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+// Necessary for Next auth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  user_id           Int
+  email             String?
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id             String           @id @default(cuid())
+  name           String?
+  username       String?          @unique
+  birthDate      String?
+  email          String?          @unique
+  emailVerified  DateTime?
+  phone          String?
+  phoneVerified  DateTime?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  role           String?
+  about          String?          @db.Text
+  country        String?          @db.Text
+  city           String?          @db.Text
+  // Education      Education[]
+  // WorkExperience WorkExperience[]
+  // UserSkills     UserSkills[]
+  inSearch       Boolean          @default(false)
+
+  // chats                Chat[]
+  // messages             Message[]
+  // BookMarks            Bookmarks[]
+  // This second "side" of the UserFriends relation exists solely 
+  // to satisfy prisma's requirements; we won't access it directly.
+  connections          User[]      @relation("UserConnections")
+  symmetricConnections User[]      @relation("UserConnections")
+
+  // educationLevelId String?
+  // educationLevel   EducationLevel? @relation(fields: [educationLevelId], references: [id])
+
+  // IGetRequest  FriendRequests[] @relation("IGetRequest")
+  // ISendRequest FriendRequests[] @relation("ISendRequest")
+
+  // PremiumMessageGet  PremiumMessage[] @relation("PremiumMessageGet")
+  // PremiumMessageSent PremiumMessage[] @relation("PremiumMessageSent")
+
+  // UpdatesToMe    Updates[] @relation("UpdatesToMe")
+  // UpdatesFromWho Updates[] @relation("UpdatesFromWho")
+
+  // UpdatesToMe    Updates[] @relation("UpdatesToMe")
+  // UpdatesFromWho Updates[] @relation("UpdatesFromWho")
+
+  myCompanyFolowers User[] @relation("FollowingSystem")
+  companiesIFollow  User[] @relation("FollowingSystem")
+
+  // Post     Post[]
+  // Reaction Reaction[]
+  // Company  Company?
+  // HR       Hr[]
+
+  // VacancyReply      VacancyReply[]
+  // File              File[]
+
+  // planId String?
+  // plan   Plan?   @relation(fields: [planId], references: [id])
+}

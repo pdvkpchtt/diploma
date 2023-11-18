@@ -1,0 +1,34 @@
+"use client";
+
+import { ThemeProvider } from "next-themes";
+// import { usePathname } from "next/navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const Layout = ({ children }) => {
+  // const pathname = usePathname();
+  return (
+    <ThemeProvider enableSystem={true} attribute="class">
+      <div
+        className={`
+        h-full
+        flex flex-col justify-start
+        max-w-[1012px] [@media(hover)]:min-w-[1012px] [@media(pointer:coarse)]:max-w-[500px] mx-auto 
+        px-[16px] [@media(pointer:coarse)]:px-[12px]
+        items-start [@media(pointer:coarse)]:items-center            
+       `}
+      >
+        {children}
+      </div>
+
+      <ToastContainer
+        toastClassName={() =>
+          "relative flex rounded-[20px] select-none [@media(pointer:coarse)]:rounded-[0px] shadow h-[50px] p-1 justify-between overflow-hidden cursor-pointer bg-[#f6f6f8] text-[#2c2c2c] dark:bg-[#141414] dark:text-white"
+        }
+        limit={1}
+      />
+    </ThemeProvider>
+  );
+};
+
+export default Layout;
