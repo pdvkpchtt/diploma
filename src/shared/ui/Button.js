@@ -3,6 +3,129 @@
 import { useState } from "react";
 import { Oval } from "react-loader-spinner";
 
+export const ButtonAlert = ({
+  text = "empty",
+  loader = false,
+  onClick = () => console.log("empty"),
+}) => {
+  const [loaderState, setLoaderState] = useState(false);
+
+  const clickHandler = () => {
+    onClick();
+
+    if (loader) setLoaderState(true);
+  };
+
+  return (
+    <div
+      className="font-medium text-center h-[20px] flex justify-center w-fit cursor-pointer select-none leading-[20px] text-[16px] tracking-[-0.015em] text-[#F04646] hover:text-[#C92121] active:text-[#8a3838]"
+      onClick={() => clickHandler()}
+    >
+      {!loaderState ? (
+        <>{text}</>
+      ) : (
+        <Oval
+          height={19}
+          width={19}
+          color="#F04646"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="oval-loading"
+          secondaryColor="rgba(240,70,70, 0.3)"
+          strokeWidth={6}
+          strokeWidthSecondary={6}
+        />
+      )}
+    </div>
+  );
+};
+
+export const ButtonGhost = ({
+  children,
+  style = "",
+  type,
+  text = "empty",
+  small = false,
+  onClick = () => console.log("empty"),
+}) => {
+  const clickHandler = () => {
+    onClick();
+  };
+
+  return (
+    <button
+      type={type ? type : null}
+      className={`${style} group text-center h-[28px] w-fit whitespace-nowrap items-center flex-row gap-[8px] flex 
+      ${
+        small
+          ? "font-medium text-[14px] leading-[16px] tracking-[-0.015em]"
+          : "font-medium leading-[20px] text-[16px] tracking-[-0.015em]"
+      } 
+      text-[#5875e8] cursor-pointer select-none transition duration-[250ms] hover:text-[#3A56C5] active:text-[#2C429C]`}
+      onClick={() => clickHandler()}
+    >
+      <>{children}</>
+      <>{text}</>
+    </button>
+  );
+};
+
+export const ButtonSecondary = ({
+  small = false,
+  style = "",
+  type,
+  rounded = 20,
+  text = "Button",
+  loader = false,
+  children,
+  start = false,
+  onClick = () => console.log("empty"),
+}) => {
+  const [loaderState, setLoaderState] = useState(false);
+
+  const clickHandler = () => {
+    onClick();
+
+    if (loader) setLoaderState(true);
+  };
+
+  return (
+    <button
+      type={type ? type : null}
+      className={`${style} group text-center text-[#5875e8] items-center flex ${
+        start ? "justify-start" : "justify-center"
+      } ${
+        small
+          ? "font-medium text-[14px] leading-[16px] tracking-[-0.015em] h-[32px]"
+          : "font-medium leading-[20px] text-[16px] tracking-[-0.015em] h-[44px]"
+      } cursor-pointer select-none transition duration-[250ms] bg-[#74899B] bg-opacity-[8%] hover:text-[#3A56C5] active:text-[#2C429C]`}
+      onClick={() => clickHandler()}
+      style={{ borderRadius: rounded }}
+    >
+      {!loaderState ? (
+        <div className="flex flex-row gap-[8px] py-[8px] items-center whitespace-nowrap">
+          {children}
+          <>{text}</>
+        </div>
+      ) : (
+        <Oval
+          height={19}
+          width={19}
+          color="#5875E8"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="oval-loading"
+          secondaryColor="rgba(88,117,232, 0.3)"
+          strokeWidth={6}
+          strokeWidthSecondary={6}
+        />
+      )}
+    </button>
+  );
+};
+
 export const ButtonPrimary = ({
   text = "empty",
   type,

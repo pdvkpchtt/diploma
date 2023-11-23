@@ -19,7 +19,7 @@ const AuthLayout = async ({ children }) => {
     session?.user?.role &&
     ["/auth/role", "/auth", "/auth/verify", "/"].includes(fullUrl)
   ) {
-    return redirect("/feed");
+    return redirect("/profile");
   }
 
   // company

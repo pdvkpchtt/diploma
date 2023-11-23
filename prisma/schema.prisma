@@ -65,43 +65,148 @@ model User {
   city           String?          @db.Text
   // Education      Education[]
   // WorkExperience WorkExperience[]
+
   // UserSkills     UserSkills[]
-  inSearch       Boolean          @default(false)
-
-  // chats                Chat[]
-  // messages             Message[]
-  // BookMarks            Bookmarks[]
-  // This second "side" of the UserFriends relation exists solely 
-  // to satisfy prisma's requirements; we won't access it directly.
-  connections          User[]      @relation("UserConnections")
-  symmetricConnections User[]      @relation("UserConnections")
-
-  // educationLevelId String?
-  // educationLevel   EducationLevel? @relation(fields: [educationLevelId], references: [id])
-
-  // IGetRequest  FriendRequests[] @relation("IGetRequest")
-  // ISendRequest FriendRequests[] @relation("ISendRequest")
-
-  // PremiumMessageGet  PremiumMessage[] @relation("PremiumMessageGet")
-  // PremiumMessageSent PremiumMessage[] @relation("PremiumMessageSent")
-
-  // UpdatesToMe    Updates[] @relation("UpdatesToMe")
-  // UpdatesFromWho Updates[] @relation("UpdatesFromWho")
-
-  // UpdatesToMe    Updates[] @relation("UpdatesToMe")
-  // UpdatesFromWho Updates[] @relation("UpdatesFromWho")
-
-  myCompanyFolowers User[] @relation("FollowingSystem")
-  companiesIFollow  User[] @relation("FollowingSystem")
-
-  // Post     Post[]
-  // Reaction Reaction[]
-  // Company  Company?
-  // HR       Hr[]
-
-  // VacancyReply      VacancyReply[]
-  // File              File[]
-
-  // planId String?
-  // plan   Plan?   @relation(fields: [planId], references: [id])
+  BookMarks      Bookmarks[]
+  Company        Company?
+  HR             Hr[]
 }
+
+model Company {
+  id         String           @id @default(cuid())
+  userId     String           @unique
+  username   String?          @unique
+  name       String
+  image      String?
+  slogan     String?
+  about      String?
+  country    String?          @db.Text
+  city       String?          @db.Text
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @default(now())
+  Vacancy    Vacancy[]
+  Cities     Cities[]
+  industryId String?
+  industry   CompanyIndustry? @relation(fields: [industryId], references: [id])
+  HR         Hr[]
+}
+
+model CompanyIndustry {
+  id      String    @id @default(cuid())
+  label   String
+  Company Company[]
+}
+
+model Vacancy {
+  id        String  @id @default(cuid())
+  name      String
+  companyId String
+  Company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  description      String
+  shortDescription String
+
+  waitings String
+
+  conditions String
+
+  salaryStart String?
+  salaryEnd   String?
+
+  Bookmarks     Bookmarks[]
+
+  distantWork Boolean @default(false)
+
+  formatId String?
+  format   Format? @relation(fields: [formatId], references: [id])
+
+  experienceId String?
+  experience   Experience? @relation(fields: [experienceId], references: [id])
+
+  contractId String?
+  contract   Contract? @relation(fields: [contractId], references: [id])
+
+  currencyId String?
+  currency   Currency? @relation(fields: [currencyId], references: [id])
+
+  industryId String?
+  Industry   Industry? @relation(fields: [industryId], references: [id])
+
+  hrCreatorId  String?
+  hrCreator    Hr?            @relation(fields: [hrCreatorId], references: [id])
+}
+
+model Experience {
+  id      String    @id @default(cuid())
+  label    String
+  vacancy Vacancy[]
+}
+
+
+model Contract {
+  id      String    @id @default(cuid())
+  label   String
+  vacancy Vacancy[]
+}
+
+model Currency {
+  id      String    @id @default(cuid())
+  label   String
+  vacancy Vacancy[]
+}
+
+model Industry {
+  id      String    @id @default(cuid())
+  label    String
+  vacancy Vacancy[]
+}
+
+model Format {
+  id      String    @id @default(cuid())
+  label    String
+  vacancy Vacancy[]
+}
+
+
+model Cities {
+  id        String  @id @default(cuid())
+  label     String
+  companyId String
+  Company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Hr {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String
+  company      Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  token        String
+  dataVerified DateTime?
+  Vacancy      Vacancy[]
+}
+
+model Bookmarks {
+  id        String  @id @default(cuid())
+  userId    String  @db.Text
+  vacancyId String  @db.Text
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+}
+
+model BigCity {
+  id    String @id @default(cuid())
+  label String
+}
+
+model Skill {
+  id            String          @id @default(cuid())
+  name          String          @db.Text
+  type          String          @default("")
+  // UserSkills    UserSkills[]
+  // VacancySkills VacancySkills[]
+  areaId        String?
+  // area          Area?           @relation(fields: [areaId], references: [id])
+}
+

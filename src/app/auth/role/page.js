@@ -22,7 +22,7 @@ const RolePage = async () => {
           subtext="Хочу работать в супер компании"
           onClick={async () => {
             await finishRegistration("student");
-            router.push("/feed");
+            router.push("/profile");
           }}
         />
         <RoleButton
