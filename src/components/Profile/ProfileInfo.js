@@ -3,12 +3,17 @@ import Link from "next/link";
 import TextMain from "../../shared/Text/TextMain";
 import TextSecondary from "../../shared/Text/TextSecondary";
 import Card from "../../shared/ui/Card";
-
 import { ButtonSecondary } from "../../shared/ui/Button";
+import SkillCard from "../../shared/ui/SkillCard";
+
 import PenIcon from "../../shared/icons/PenIcon";
 
 const ProfileInfo = ({ data, others = false }) => {
-  if (data.about == null || data.about == "")
+  if (
+    (data.about == null || data.about == "") &&
+    data.UserSkills.length == 0 &&
+    data.UserArea.length == 0
+  )
     if (others)
       return (
         <Card style={"flex justify-center"}>
@@ -46,9 +51,9 @@ const ProfileInfo = ({ data, others = false }) => {
 
   return (
     <>
-      <Card style="flex flex-col h-full gap-[20px]">
-        {/* about me */}
-        {data.about && (
+      {data.about && (
+        <Card style="flex flex-col h-full gap-[20px]">
+          {/* about me */}
           <div className="flex flex-col gap-[8px]">
             <TextSecondary
               text={others ? "О пользователе" : "Обо мне"}
@@ -57,12 +62,75 @@ const ProfileInfo = ({ data, others = false }) => {
 
             <TextMain
               text={data.about}
-              style="font-medium leading-[18px] traking-[-0.013em] text-[14px]"
+              style="font-medium whitespace-pre-line leading-[18px] traking-[-0.013em] text-[14px]"
             />
           </div>
-        )}
-        {/* about me */}
-      </Card>
+          {/* about me */}
+        </Card>
+      )}
+
+      {data.UserArea?.length !== 0 && (
+        <Card style="flex flex-col gap-[20px]">
+          {data.UserArea.filter((item) => item.type !== "soft").length > 0 && (
+            <div className="flex flex-col gap-[8px]">
+              <TextSecondary
+                text="Сфера"
+                style="font-medium select-none leading-[18px] traking-[-0.013em] text-[14px]"
+              />
+              <div className="flex flex-row flex-wrap w-full gap-[8px]">
+                {data.UserArea?.map((item, key) => (
+                  <SkillCard area hard={false} key={key} text={item.label} />
+                ))}
+              </div>
+            </div>
+          )}
+          {/* Hard skills pc */}
+        </Card>
+      )}
+
+      {data.UserSkills?.length !== 0 && (
+        <Card style="flex flex-col gap-[20px]">
+          {/* Hard skills pc */}
+          {data.UserSkills.filter((item) => item.type !== "soft").length >
+            0 && (
+            <div className="flex flex-col gap-[8px]">
+              <TextSecondary
+                text="Хард-скиллы"
+                style="font-medium select-none leading-[18px] traking-[-0.013em] text-[14px]"
+              />
+              <div className="flex flex-row flex-wrap w-full gap-[8px]">
+                {data.UserSkills?.map(
+                  (item, key) =>
+                    item.type === "hard" && (
+                      <SkillCard key={key} text={item.name} />
+                    )
+                )}
+              </div>
+            </div>
+          )}
+          {/* Hard skills pc */}
+
+          {/* Soft skills pc */}
+          {data.UserSkills.filter((item) => item.type !== "hard").length >
+            0 && (
+            <div className="flex flex-col gap-[8px]">
+              <TextSecondary
+                text="Софт-скиллы"
+                style="font-medium select-none leading-[18px] traking-[-0.013em] text-[14px]"
+              />
+              <div className="flex flex-row flex-wrap w-full gap-[8px]">
+                {data.UserSkills?.map(
+                  (item, key) =>
+                    item.type === "soft" && (
+                      <SkillCard hard={false} soft key={key} text={item.name} />
+                    )
+                )}
+              </div>
+            </div>
+          )}
+          {/* Soft skills pc */}
+        </Card>
+      )}
     </>
   );
 };

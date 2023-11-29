@@ -13,14 +13,17 @@ const RootLayout = ({ children }) => {
           ? "[@media(pointer:coarse)]:mt-[61px]"
           : "[@media(pointer:coarse)]:mt-[38px]"
       } 
-      h-full [@media(pointer:coarse)]:overflow-y-auto
-      ${
-        pathname === "/profile/edit"
-          ? "[@media(pointer:coarse)]:mb-[0px]"
-          : "[@media(pointer:coarse)]:mb-[80px]"
-      } [@media(pointer:coarse)]:p-[12px]`}
+      h-full 
+       [@media(pointer:coarse)]:p-[12px]`}
     >
       {children}
+      <div
+        className={`${
+          pathname !== "/profile/edit"
+            ? "[@media(pointer:coarse)]:pb-[80px]"
+            : "[@media(pointer:coarse)]:pb-[3px]"
+        }`}
+      />
     </div>
   );
 };

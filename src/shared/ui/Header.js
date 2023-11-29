@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 // import HomeIcon from "../icons/HomeIcon";
 // import SearchIcon from "../icons/SearchIcon";
 // import MessengerIcon from "../icons/MessengerIcon";
+import DemoIcon from "../icons/DemoIcon";
 import ProfileIcon from "../icons/ProfileIcon";
 
 const Header = ({ role }) => {
@@ -32,7 +33,7 @@ const Header = ({ role }) => {
             <MessengerIcon /> */}
             <div className="w-[25px] h-[25px] bg-[#f6f6f8] dark:bg-[#141414]" />
             <div className="w-[25px] h-[25px] bg-[#f6f6f8] dark:bg-[#141414]" />
-            <div className="w-[25px] h-[25px] bg-[#f6f6f8] dark:bg-[#141414]" />
+            <DemoIcon />
             <ProfileIcon role={role} />
           </div>
 

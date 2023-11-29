@@ -63,14 +63,37 @@ model User {
   about          String?          @db.Text
   country        String?          @db.Text
   city           String?          @db.Text
-  // Education      Education[]
-  // WorkExperience WorkExperience[]
 
-  // UserSkills     UserSkills[]
+  educationLevelId String?
+  educationLevel   EducationLevel? @relation(fields: [educationLevelId], references: [id])
+
+  UserArea       UserArea[]
+  UserSkills     UserSkills[]
   BookMarks      Bookmarks[]
   Company        Company?
   HR             Hr[]
 }
+
+model EducationLevel {
+  id      String    @id @default(cuid())
+  label    String
+  user    User[]
+}
+
+model UserSkills {
+  id      String @id @default(cuid())
+  userId  String @db.Text
+  skillId String @db.Text
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+}
+model UserArea {
+  id      String @id @default(cuid())
+  label   String
+  userId  String @db.Text
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 
 model Company {
   id         String           @id @default(cuid())
@@ -204,9 +227,14 @@ model Skill {
   id            String          @id @default(cuid())
   name          String          @db.Text
   type          String          @default("")
-  // UserSkills    UserSkills[]
+  UserSkills    UserSkills[]
   // VacancySkills VacancySkills[]
   areaId        String?
-  // area          Area?           @relation(fields: [areaId], references: [id])
+  area          Area?           @relation(fields: [areaId], references: [id])
 }
 
+model Area {
+  id    String  @id @default(cuid())
+  label String
+  skill Skill[]
+}

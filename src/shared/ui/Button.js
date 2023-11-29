@@ -200,3 +200,15 @@ export const RoleButton = ({ text = "", subtext = "", onClick }) => {
     </div>
   );
 };
+
+export const OneIconButton = ({ onClick = () => {}, style = "", children }) => {
+  return (
+    <div
+      className={`${style} group rounded-[16px] px-[12px] py-[8px] text-center text-[#5875e8] items-center flex justify-center
+       cursor-pointer w-fit select-none transition duration-[250ms] bg-[#74899B] bg-opacity-[8%]`}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  );
+};

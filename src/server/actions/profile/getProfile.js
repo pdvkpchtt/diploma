@@ -18,6 +18,19 @@ export const getProfile = async ({ userId }) => {
       phone: true,
       phoneVerified: true,
       Company: true,
+      UserArea: true,
+      educationLevel: true,
+      UserSkills: {
+        select: {
+          skill: {
+            select: {
+              id: true,
+              name: true,
+              type: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -53,6 +66,13 @@ export const getProfile = async ({ userId }) => {
       phoneVerified: user.phoneVerified,
       city: user.city,
       birthDate: user.birthDate,
+      UserArea: user.UserArea,
+      UserSkills: user.UserSkills.map((userSkill) => ({
+        id: userSkill.skill.id,
+        name: userSkill.skill.name,
+        type: userSkill.skill.type,
+      })),
+      educationLevel: user.educationLevel,
 
       Company: user.Company,
       hrCompany: comapny,
@@ -71,6 +91,13 @@ export const getProfile = async ({ userId }) => {
       phoneVerified: user.phoneVerified,
       email: user.email,
       birthDate: user.birthDate,
+      UserArea: user.UserArea,
+      UserSkills: user.UserSkills.map((userSkill) => ({
+        id: userSkill.skill.id,
+        name: userSkill.skill.name,
+        type: userSkill.skill.type,
+      })),
+      educationLevel: user.educationLevel,
 
       Company: user.Company,
     };

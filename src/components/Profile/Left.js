@@ -16,6 +16,7 @@ import CustomLoader from "../../shared/ui/CustomLoader";
 import LocationIcon from "../../shared/icons/LocationIcon";
 import CalendarIcon from "../../shared/icons/CalendarIcon";
 import PenIcon from "../../shared/icons/PenIcon";
+import ExitIcon from "../../shared/icons/ExitIcon";
 
 const Left = ({ navState, data }) => {
   const router = useRouter();
@@ -106,10 +107,30 @@ const Left = ({ navState, data }) => {
         </div>
       </Card>
 
+      <Card
+        style="max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] gap-[8px] flex flex-col"
+        padding={12}
+      >
+        <ButtonGhost
+          text="Редактировать"
+          onClick={() =>
+            router.push("/profile/edit", { query: { data: "update" } })
+          }
+        >
+          <PenIcon fill={"#5875e8"} />
+        </ButtonGhost>
+      </Card>
+
       <div
         className={`p-[12px] rounded-[20px] items-center flex flex-row max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] bg-[#74899B] bg-opacity-[8%]`}
       >
-        <ButtonAlert text="Выход" onClick={signOut} />
+        <div
+          className="font-medium text-center h-[20px] flex flex-row gap-[8px] group transition duration-[250ms] w-fit cursor-pointer select-none leading-[20px] text-[16px] tracking-[-0.015em] text-[#F04646] hover:text-[#C92121] active:text-[#8a3838]"
+          onClick={signOut}
+        >
+          <ExitIcon />
+          Выход
+        </div>
       </div>
     </div>
   );
