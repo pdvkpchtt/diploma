@@ -1,23 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Oval } from "react-loader-spinner";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-import { OneIconButton } from "../../shared/ui/Button";
+import { ButtonSecondary, OneIconButton } from "../../shared/ui/Button";
 import { Input, TextArea } from "../../shared/ui/Input";
 import SkillCard from "../../shared/ui/SkillCard";
 import TextSecondary from "../../shared/Text/TextSecondary";
 import SkillsModalVacs from "./SkillsModalVacs";
 import DropDownWithSearch from "../../shared/ui/DropDownWithSearch";
 import DropDownWithChoise from "../../shared/ui/DropDownWithChoise";
+import TextMain from "../../shared/Text/TextMain";
 
 import CheckIcon from "../../shared/icons/CheckIcon";
 import ArrowLeftIcon from "../../shared/icons/ArrowLeftIcon";
 import AddCityIcon from "../../shared/icons/AddCityIcon";
+import AddVacancyIcon from "../../shared/icons/AddVacancyIcon";
 
 const EditRight = ({
   data,
@@ -147,155 +150,182 @@ const EditRight = ({
 
       {/* body */}
       <div className="p-[12px] flex flex-col gap-[16px] rounded-b-[20px] [@media(pointer:coarse)]:rounded-[20px] bg-white dark:bg-[#212122]">
-        {/* about me */}
-        <TextArea
-          placeholder="Расскажите о ваших мечтах и карьерных планах"
-          label="Обо мне"
-          value={dataToUpdate.about}
-          caption={
-            !status
-              ? null
-              : status?.includes("inputAbout maxlen")
-              ? "Максимальная длинна поля 120 сиволов"
-              : null
-          }
-          onChange={(about) => {
-            setDataToUpdate({
-              ...dataToUpdate,
-              about: about,
-            });
-            if (status)
-              setStatus(status.filter((i) => !i.includes("inputAbout")));
-          }}
-        />
-        {/* about me */}
+        {data.role === "student" ? (
+          <>
+            {/* about me */}
+            <TextArea
+              placeholder="Расскажите о ваших мечтах и карьерных планах"
+              label="Обо мне"
+              value={dataToUpdate.about}
+              caption={
+                !status
+                  ? null
+                  : status?.includes("inputAbout maxlen")
+                  ? "Максимальная длинна поля 120 сиволов"
+                  : null
+              }
+              onChange={(about) => {
+                setDataToUpdate({
+                  ...dataToUpdate,
+                  about: about,
+                });
+                if (status)
+                  setStatus(status.filter((i) => !i.includes("inputAbout")));
+              }}
+            />
+            {/* about me */}
 
-        {/* EducationLevel */}
-        <div className="flex flex-col w-full">
-          <TextSecondary
-            text={"Высшее образование"}
-            style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] mb-[6px]"
-          />
-          <DropDownWithSearch
-            city={
-              dataToUpdate?.educationLevel === null
-                ? ""
-                : dataToUpdate?.educationLevel?.label
-            }
-            setCity={(val) => {
-              setDataToUpdate({
-                ...dataToUpdate,
-                educationLevel: val,
-              });
-            }}
-            items={educationLevelData}
-            placeholder={"Да/Нет"}
-          />
-        </div>
-        {/* EducationLevel */}
-
-        {/* area */}
-        <div className="flex flex-col relative">
-          <TextSecondary
-            text={"Сфера"}
-            style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] mb-[6px]"
-          />
-          {dataToUpdate.UserArea.length > 0 ? (
-            <div className="flex-wrap flex flex-row gap-[10px]">
-              {dataToUpdate.UserArea.map((item, key) => (
-                <SkillCard
-                  key={key}
-                  onClick={() => setState(true)}
-                  noCopy
-                  area
-                  hard={false}
-                  text={item.label}
-                />
-              ))}
-            </div>
-          ) : (
-            <AddCityIcon area onClick={() => setState(true)} />
-          )}
-          <DropDownWithChoise
-            state={state}
-            setState={setState}
-            city={dataToUpdate?.UserArea}
-            setCity={(val) => {
-              setDataToUpdate({
-                ...dataToUpdate,
-                UserArea: val,
-              });
-            }}
-            items={areas}
-            placeholder="Не выбрано"
-          />
-        </div>
-        {/* area */}
-
-        {/* skills */}
-        <div className="flex flex-col relative gap-[16px]">
-          {dataToUpdate.UserSkills.length === 0 ? (
-            <div className="flex flex-col">
+            {/* EducationLevel */}
+            <div className="flex flex-col w-full">
               <TextSecondary
-                text={"Скиллы"}
+                text={"Высшее образование"}
                 style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] mb-[6px]"
               />
-              <AddCityIcon onClick={() => toggle(true)} />
+              <DropDownWithSearch
+                city={
+                  dataToUpdate?.educationLevel === null
+                    ? ""
+                    : dataToUpdate?.educationLevel?.label
+                }
+                setCity={(val) => {
+                  setDataToUpdate({
+                    ...dataToUpdate,
+                    educationLevel: val,
+                  });
+                }}
+                items={educationLevelData}
+                placeholder={"Да/Нет"}
+              />
             </div>
-          ) : (
-            <>
-              {dataToUpdate.UserSkills.filter((item) => item.type !== "soft")
-                .length > 0 && (
-                <div className="flex flex-col gap-[8px]">
-                  <TextSecondary
-                    text={"Хард-скиллы"}
-                    style="font-medium text-[14px] leading-[18px] tracking-[-0.013em] whitespace-nowrap"
-                  />
+            {/* EducationLevel */}
 
-                  <div className="flex flex-row gap-[8px] flex-wrap">
-                    {dataToUpdate.UserSkills.map(
-                      (item) =>
-                        item.type === "hard" && (
-                          <SkillCard
-                            noCopy
-                            onClick={() => toggle(true)}
-                            text={item.name}
-                            key={item.id}
-                          />
-                        )
-                    )}
-                  </div>
+            {/* area */}
+            <div className="flex flex-col relative">
+              <TextSecondary
+                text={"Сфера"}
+                style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] mb-[6px]"
+              />
+              {dataToUpdate.UserArea.length > 0 ? (
+                <div className="flex-wrap flex flex-row gap-[10px]">
+                  {dataToUpdate.UserArea.map((item, key) => (
+                    <SkillCard
+                      key={key}
+                      onClick={() => setState(true)}
+                      noCopy
+                      area
+                      hard={false}
+                      text={item.label}
+                    />
+                  ))}
                 </div>
+              ) : (
+                <AddCityIcon area onClick={() => setState(true)} />
               )}
-              {dataToUpdate.UserSkills.filter((item) => item.type !== "hard")
-                .length > 0 && (
-                <div className="flex flex-col gap-[8px]">
-                  <TextSecondary
-                    text={"Софт-скиллы"}
-                    style="font-medium text-[14px] leading-[18px] tracking-[-0.013em] whitespace-nowrap"
-                  />
+              <DropDownWithChoise
+                state={state}
+                setState={setState}
+                city={dataToUpdate?.UserArea}
+                setCity={(val) => {
+                  setDataToUpdate({
+                    ...dataToUpdate,
+                    UserArea: val,
+                  });
+                }}
+                items={areas}
+                placeholder="Не выбрано"
+              />
+            </div>
+            {/* area */}
 
-                  <div className="flex flex-row gap-[8px] flex-wrap">
-                    {dataToUpdate.UserSkills.map(
-                      (item) =>
-                        item.type === "soft" && (
-                          <SkillCard
-                            noCopy
-                            onClick={() => toggle(true)}
-                            soft
-                            hard={false}
-                            text={item.name}
-                            key={item.id}
-                          />
-                        )
-                    )}
-                  </div>
+            {/* skills */}
+            <div className="flex flex-col relative gap-[16px]">
+              {dataToUpdate.UserSkills.length === 0 ? (
+                <div className="flex flex-col">
+                  <TextSecondary
+                    text={"Скиллы"}
+                    style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] mb-[6px]"
+                  />
+                  <AddCityIcon onClick={() => toggle(true)} />
                 </div>
+              ) : (
+                <>
+                  {dataToUpdate.UserSkills.filter(
+                    (item) => item.type !== "soft"
+                  ).length > 0 && (
+                    <div className="flex flex-col gap-[8px]">
+                      <TextSecondary
+                        text={"Хард-скиллы"}
+                        style="font-medium text-[14px] leading-[18px] tracking-[-0.013em] whitespace-nowrap"
+                      />
+
+                      <div className="flex flex-row gap-[8px] flex-wrap">
+                        {dataToUpdate.UserSkills.map(
+                          (item) =>
+                            item.type === "hard" && (
+                              <SkillCard
+                                noCopy
+                                onClick={() => toggle(true)}
+                                text={item.name}
+                                key={item.id}
+                              />
+                            )
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {dataToUpdate.UserSkills.filter(
+                    (item) => item.type !== "hard"
+                  ).length > 0 && (
+                    <div className="flex flex-col gap-[8px]">
+                      <TextSecondary
+                        text={"Софт-скиллы"}
+                        style="font-medium text-[14px] leading-[18px] tracking-[-0.013em] whitespace-nowrap"
+                      />
+
+                      <div className="flex flex-row gap-[8px] flex-wrap">
+                        {dataToUpdate.UserSkills.map(
+                          (item) =>
+                            item.type === "soft" && (
+                              <SkillCard
+                                noCopy
+                                onClick={() => toggle(true)}
+                                soft
+                                hard={false}
+                                text={item.name}
+                                key={item.id}
+                              />
+                            )
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
-            </>
-          )}
-        </div>
-        {/* skills */}
+            </div>
+            {/* skills */}
+          </>
+        ) : (
+          <>
+            <div
+              className="items-center flex flex-col gap-[24px] mx-auto justify-center w-full max-w-[288px] text-center 
+        my-[38px] [@media(pointer:coarse)]:my-[33px]"
+            >
+              <TextMain
+                text={`Добавьте вакансию и найдите супер сотрудника`}
+                style="text-[18px] leading-[21.6px] tracking-[-0.025em]"
+              />
+              <Link href="/companyprofile/createvacancy">
+                <ButtonSecondary
+                  rounded={16}
+                  style="w-fit px-[12px] "
+                  text="К добавлению вакансии"
+                >
+                  <AddVacancyIcon fill={"#5875e8"} />
+                </ButtonSecondary>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
       {/* body */}
 

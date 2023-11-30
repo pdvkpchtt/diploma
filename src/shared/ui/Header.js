@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 // import MessengerIcon from "../icons/MessengerIcon";
 import DemoIcon from "../icons/DemoIcon";
 import ProfileIcon from "../icons/ProfileIcon";
+import TestIcon from "../icons/TestIcon";
 
 const Header = ({ role }) => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const Header = ({ role }) => {
             <SearchIcon />
             <MessengerIcon /> */}
             <div className="w-[25px] h-[25px] bg-[#f6f6f8] dark:bg-[#141414]" />
-            <div className="w-[25px] h-[25px] bg-[#f6f6f8] dark:bg-[#141414]" />
+            <TestIcon />
             <DemoIcon />
             <ProfileIcon role={role} />
           </div>

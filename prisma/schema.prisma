@@ -158,6 +158,9 @@ model Vacancy {
 
   hrCreatorId  String?
   hrCreator    Hr?            @relation(fields: [hrCreatorId], references: [id])
+  VacancySkills VacancySkills[]
+  vacArea    VacArea[]
+  createdAt  DateTime         @default(now())
 }
 
 model Experience {
@@ -166,6 +169,12 @@ model Experience {
   vacancy Vacancy[]
 }
 
+model VacArea {
+  id        String  @id @default(cuid())
+  label     String
+  vacancyId String
+  Vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+}
 
 model Contract {
   id      String    @id @default(cuid())
@@ -228,9 +237,17 @@ model Skill {
   name          String          @db.Text
   type          String          @default("")
   UserSkills    UserSkills[]
-  // VacancySkills VacancySkills[]
+  VacancySkills VacancySkills[]
   areaId        String?
   area          Area?           @relation(fields: [areaId], references: [id])
+}
+
+model VacancySkills {
+  id        String  @id @default(cuid())
+  vacancyId String  @db.Text
+  skillId   String  @db.Text
+  vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
 }
 
 model Area {

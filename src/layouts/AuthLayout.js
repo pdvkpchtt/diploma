@@ -21,34 +21,24 @@ const AuthLayout = async ({ children }) => {
   ) {
     return redirect("/profile");
   }
+  if (
+    session?.user?.role === "hr_no_nickname" &&
+    fullUrl !== "/companyprofile/edit"
+  )
+    return redirect("/companyprofile/edit");
 
-  // company
-  // if (session?.user?.role === "company" && fullUrl === "/profile") {
-  //   return redirect("/companyprofile");
-  // }
-  // if (session?.user?.role === "company" && fullUrl === "/profile/edit") {
-  //   return redirect("/companyprofile/edit");
-  // }
-  // if (session?.user?.role === "student" && fullUrl === "/companyprofile") {
-  //   return redirect("/profile");
-  // }
-  // if (session?.user?.role === "student" && fullUrl === "/companyprofile/edit") {
-  //   return redirect("/profile/edit");
-  // }
-  // if (
-  //   session?.user?.role === "student" &&
-  //   fullUrl === "/companyprofile/createvacancy"
-  // ) {
-  //   return redirect("/profile");
-  // }
-  //   if (
-  //     session?.user?.role === "company" &&
-  //     !session?.user?.companyName &&
-  //     fullUrl !== "/companyprofile/edit"
-  //   ) {
-  //     return redirect("/companyprofile/edit");
-  //   }
-  // company
+  if (session?.user?.role === "student" && fullUrl === "/companyprofile") {
+    return redirect("/profile");
+  }
+  if (session?.user?.role === "student" && fullUrl === "/companyprofile/edit") {
+    return redirect("/profile/edit");
+  }
+  if (
+    session?.user?.role === "student" &&
+    fullUrl === "/companyprofile/createvacancy"
+  ) {
+    return redirect("/profile");
+  }
 
   return <div className={"auth w-full h-full"}>{children}</div>;
 };

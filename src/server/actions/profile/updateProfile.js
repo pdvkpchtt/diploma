@@ -36,7 +36,7 @@ export const updateProfile = async ({ userId, data }) => {
       name: data.name,
       city: data.city,
       about: data.about,
-      username: data.username,
+      username: data.username.split(" ").join(""),
       birthDate: data.birthDate || null,
       educationLevel: data.educationLevel?.id
         ? {

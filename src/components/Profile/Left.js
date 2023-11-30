@@ -5,6 +5,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useClipboard } from "use-clipboard-copy";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import TextMain from "../../shared/Text/TextMain";
 import TextSecondary from "../../shared/Text/TextSecondary";
@@ -21,7 +24,7 @@ import ExitIcon from "../../shared/icons/ExitIcon";
 const Left = ({ navState, data }) => {
   const router = useRouter();
   const isMobile = useMediaQuery({ query: "(pointer:coarse)" });
-  const location = [data.city, data.country];
+  const clipboard = useClipboard();
 
   return (
     <div
@@ -65,29 +68,33 @@ const Left = ({ navState, data }) => {
             />
             <TextSecondary
               text={`@${data.username}`}
-              style="font-medium text-[14px] leading-[16px] tracking-[-0.015em]"
+              style="font-medium text-[14px] cursor-pointer leading-[16px] tracking-[-0.015em]"
+              onClick={() => {
+                toast(`🗂 Текст скопирован`, {
+                  position: isMobile ? "top-center" : "bottom-right",
+                  autoClose: 2000,
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  // theme: "dark",
+                  progressStyle: { background: "#5875e8" },
+                  containerId: "forCopy",
+                });
+                clipboard.copy(data.username);
+              }}
             />
           </div>
           {/* name and username */}
 
           {/* location and birth date */}
           <div className="flex flex-col">
-            {(data.city === null && data.country === null) ||
-            (data.city?.length === 0 && data.country?.length === 0) ? null : (
+            {data.city === null || data.city?.length === 0 ? null : (
               <div className="flex flex-row gap-[8px] mt-[12px]">
                 <LocationIcon />
                 <TextSecondary
-                  text={location.map((i, key) =>
-                    !i
-                      ? ""
-                      : `${i}${
-                          location[key + 1] === null ||
-                          location[key + 1]?.length === 0 ||
-                          key === location.length - 1
-                            ? ""
-                            : ", "
-                        }`
-                  )}
+                  text={data.city}
                   style="font-normal text-[14px] leading-[18px] tracking-[-0.015em]"
                 />
               </div>
@@ -120,6 +127,33 @@ const Left = ({ navState, data }) => {
           <PenIcon fill={"#5875e8"} />
         </ButtonGhost>
       </Card>
+
+      {/* hr */}
+      {data.role.includes("hr") && (
+        <div className="p-[12px] rounded-[20px] items-center flex flex-row justify-between max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] bg-[#74899B] bg-opacity-[8%]">
+          <ButtonGhost
+            text={data.hrCompany.company.name}
+            onClick={() => router.push(`/companyprofile`)}
+          >
+            <div className="rounded-full overflow-hidden aspect-square w-[20px] h-[20px] min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px]">
+              {data.hrCompany.company.image ? (
+                <Image
+                  src={data.hrCompany.company.image}
+                  alt="hr company photo"
+                  className="w-[20px] h-[20px] min-w-[20px] object-cover min-h-[20px] max-w-[20px] max-h-[20px]"
+                  width={20}
+                  height={20}
+                  quality={100}
+                  priority={true}
+                />
+              ) : (
+                <div className="rounded-full h-[20px] w-[20px] bg-[#f6f6f8] dark:bg-[#141414]" />
+              )}
+            </div>
+          </ButtonGhost>
+        </div>
+      )}
+      {/* hr */}
 
       <div
         className={`p-[12px] rounded-[20px] items-center flex flex-row max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] bg-[#74899B] bg-opacity-[8%]`}

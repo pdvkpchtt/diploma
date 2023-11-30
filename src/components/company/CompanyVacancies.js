@@ -2,29 +2,30 @@
 
 import { useEffect, useState } from "react";
 import { Waypoint } from "react-waypoint";
+import { LayoutGroup } from "framer-motion";
 
-import { fetchBookmarks } from "../../server/actions/bookmarks/fetchBookmarks";
-// import VacancyCard from "../../shared/ui/VacancyCard";
+import VacancyCard from "../../shared/ui/VacancyCard";
+import { fetchCompanyVacancies } from "../../server/actions/company/fetchCompanyVacancies";
 import TextMain from "../../shared/Text/TextMain";
 import Card from "../../shared/ui/Card";
 import CustomLoader from "../../shared/ui/CustomLoader";
 
-const ProfileBookmarks = ({ userId, others }) => {
+const CompanyVacancies = ({ id, others = false, role, userId }) => {
   const [cursor, setCursor] = useState("");
   const [hasNextPage, setHasNextPage] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [posts, setPosts] = useState(null);
+  const [users, setUsers] = useState(null);
 
-  const getPosts = async (cursor) => {
+  const getUsers = async (cursor) => {
     console.log("fetching");
     if (loading) return;
     setLoading(true);
-    const data = await fetchBookmarks(cursor);
-    console.log("client bookmarks", data);
+    const data = await fetchCompanyVacancies(id, cursor);
+    console.log("client vacancies", data);
     if (cursor.length) {
-      setPosts([...posts, ...data.data]);
+      setUsers([...users, ...data.data]);
     } else {
-      setPosts(data.data);
+      setUsers(data.data);
     }
     setCursor(data.cursor);
     setHasNextPage(data.hasNextPage);
@@ -33,39 +34,36 @@ const ProfileBookmarks = ({ userId, others }) => {
 
   useEffect(() => {
     setCursor("");
-    getPosts("");
-  }, [fetchBookmarks]);
+    getUsers("");
+  }, [fetchCompanyVacancies]);
 
   return (
     <>
-      {!posts ? (
+      {!users ? (
         <div className="w-full flex justify-center items-center h-full">
           <CustomLoader diameter={36} />
         </div>
-      ) : posts?.length === 0 ? (
+      ) : users?.length === 0 ? (
         <Card style={"flex justify-center"} padding={16}>
           <div className="items-center flex flex-col gap-[24px] justify-center w-full text-center ">
             <TextMain
-              text={
-                !others
-                  ? `Вы пока не прошли ни одного собеседования`
-                  : "Вы пока не провели ни одного собеседования"
-              }
+              text={`У компании пока нет вакансий`}
               style="text-[14px] font-medium leading-[18px] tracking-[-0.013em]"
             />
           </div>
         </Card>
       ) : (
         <>
-          {posts.map((item) => (
-            // <VacancyCard key={item.id} item={item.vacancy} userId={userId} />
-            <div>test</div>
-          ))}
+          <LayoutGroup id="compvac">
+            {users.map((item, key) => (
+              <VacancyCard role={role} key={key} item={item} userId={userId} />
+            ))}
+          </LayoutGroup>
           {hasNextPage ? (
             <Waypoint
               onEnter={async () => {
                 console.log("Enter waypoint");
-                await getPosts(cursor);
+                await getUsers(cursor);
               }}
               topOffset="50px"
             >
@@ -80,4 +78,4 @@ const ProfileBookmarks = ({ userId, others }) => {
   );
 };
 
-export default ProfileBookmarks;
+export default CompanyVacancies;

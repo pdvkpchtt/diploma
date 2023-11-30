@@ -38,7 +38,7 @@ export const getProfile = async ({ userId }) => {
     return parseInt(this.toString());
   };
 
-  if (user.role === "hr") {
+  if (user.role.includes("hr")) {
     const comapny = await prisma.Hr.findFirst({
       where: { userId: user.id },
       select: {

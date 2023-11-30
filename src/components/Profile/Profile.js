@@ -10,20 +10,31 @@ import ProfileBookmarks from "../../components/Profile/ProfileBookmarks";
 
 const Profile = ({ data, userId }) => {
   console.log("client profile", data);
-  const [navState, setNavState] = useState([
-    {
-      id: 0,
-      active: true,
-      name: "Информация",
-      component: <ProfileInfo data={data} />,
-    },
-    {
-      id: 1,
-      active: false,
-      name: "История откликов",
-      component: <ProfileBookmarks userId={userId} />,
-    },
-  ]);
+  const [navState, setNavState] = useState(
+    data?.role?.includes("hr")
+      ? [
+          {
+            id: 1,
+            active: true,
+            name: "История собеседований",
+            component: <ProfileBookmarks userId={userId} others />,
+          },
+        ]
+      : [
+          {
+            id: 0,
+            active: true,
+            name: "Информация",
+            component: <ProfileInfo data={data} />,
+          },
+          {
+            id: 1,
+            active: false,
+            name: "История откликов",
+            component: <ProfileBookmarks userId={userId} />,
+          },
+        ]
+  );
 
   const handleClick = (value) => {
     setNavState(value);
