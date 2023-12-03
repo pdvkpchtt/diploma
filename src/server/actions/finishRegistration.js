@@ -27,11 +27,6 @@ export const finishRegistration = async (inputRole) => {
         role: inputRole,
         name: generateNames(),
         username: session.user.id,
-        plan: {
-          connect: {
-            id: "cloe5d9670000viko6sm3k870",
-          },
-        },
       },
       select: { role: true },
     });
@@ -75,11 +70,6 @@ export const finishRegistration = async (inputRole) => {
       role: "hr_no_nickname",
       name: generateNames(),
       username: session.user.id,
-      plan: {
-        connect: {
-          id: "cloe5d9670000viko6sm3k870",
-        },
-      },
     },
     select: { role: true },
   });

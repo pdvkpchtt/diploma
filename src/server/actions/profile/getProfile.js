@@ -18,7 +18,12 @@ export const getProfile = async ({ userId }) => {
       phone: true,
       phoneVerified: true,
       Company: true,
-      UserArea: true,
+      UserArea: {
+        select: {
+          id: true,
+          label: true,
+        },
+      },
       educationLevel: true,
       UserSkills: {
         select: {
