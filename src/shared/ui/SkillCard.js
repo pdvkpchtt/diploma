@@ -32,7 +32,7 @@ const SkillCard = ({
           toast(`🗂 Текст скопирован`, {
             position: isMobile ? "top-center" : "bottom-right",
             autoClose: 2000,
-            hideProgressBar: true,
+            hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,

@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
 
       <ToastContainer
         toastClassName={() =>
-          "relative flex rounded-[20px] select-none [@media(pointer:coarse)]:rounded-[0px] shadow h-[50px] p-1 justify-between overflow-hidden cursor-pointer bg-[#f6f6f8] text-[#2c2c2c] dark:bg-[#141414] dark:text-white"
+          "relative flex rounded-[16px] select-none [@media(pointer:coarse)]:rounded-[0px] shadow h-[50px] p-1 justify-between overflow-hidden cursor-pointer bg-[#fff] text-[#2c2c2c] dark:bg-[#212122] dark:text-white"
         }
         limit={1}
       />

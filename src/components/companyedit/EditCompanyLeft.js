@@ -188,7 +188,7 @@ const EditCompanyLeft = ({
                   toast(`📧 Приглашение отправлено`, {
                     position: isMobile ? "top-center" : "bottom-right",
                     autoClose: 2000,
-                    hideProgressBar: true,
+                    hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: false,
                     draggable: true,

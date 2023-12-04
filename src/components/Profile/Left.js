@@ -68,12 +68,12 @@ const Left = ({ navState, data }) => {
             />
             <TextSecondary
               text={`@${data.username}`}
-              style="font-medium text-[14px] cursor-pointer leading-[16px] tracking-[-0.015em]"
+              style="font-medium text-[14px] cursor-pointer select-none leading-[16px] tracking-[-0.015em]"
               onClick={() => {
                 toast(`🗂 Текст скопирован`, {
                   position: isMobile ? "top-center" : "bottom-right",
                   autoClose: 2000,
-                  hideProgressBar: true,
+                  hideProgressBar: false,
                   closeOnClick: true,
                   pauseOnHover: false,
                   draggable: true,

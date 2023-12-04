@@ -88,7 +88,7 @@ const EditRight = ({
                   toast(`💾 Изменения сохранены`, {
                     position: isMobile ? "top-center" : "bottom-right",
                     autoClose: 2000,
-                    hideProgressBar: true,
+                    hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: false,
                     draggable: true,
@@ -104,7 +104,7 @@ const EditRight = ({
                   toast(`🙇 Cорри, что-то пропущено`, {
                     position: isMobile ? "top-center" : "bottom-right",
                     autoClose: 2000,
-                    hideProgressBar: true,
+                    hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: false,
                     draggable: true,

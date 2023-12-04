@@ -1,13 +1,9 @@
 "use client";
 
-import EmptyAvatar from "@/shared/ui/EmptyAvatar";
+import VideoCall from "../../components/Videocall/VideoCall";
 
 const TestPage = () => {
-  return (
-    <div className="mt-[100px] bg-[#2c2c2c] w-full flex flex-row gap-[20px] flex-wrap h-full p-[20px]">
-      demo
-    </div>
-  );
+  return <VideoCall />;
 };
 
 export default TestPage;

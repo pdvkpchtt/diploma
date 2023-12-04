@@ -79,7 +79,7 @@ const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
                 toast(`🗂 Текст скопирован`, {
                   position: isMobile ? "top-center" : "bottom-right",
                   autoClose: 2000,
-                  hideProgressBar: true,
+                  hideProgressBar: false,
                   closeOnClick: true,
                   pauseOnHover: false,
                   draggable: true,
@@ -90,7 +90,7 @@ const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
                 });
                 clipboard.copy(data.username);
               }}
-              style="font-medium text-[16px] leading-[20px] cursor-pointer tracking-[-0.24px] w-full text-center"
+              style="font-medium text-[16px] select-none leading-[20px] cursor-pointer tracking-[-0.24px] w-full text-center"
             />
           </div>
           {/* name and username */}
