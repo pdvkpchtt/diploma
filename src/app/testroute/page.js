@@ -1,9 +1,14 @@
 "use client";
 
+import SocketContextWrap from "../../components/SocketContextWrap";
 import VideoCall from "../../components/Videocall/VideoCall";
 
 const TestPage = () => {
-  return <VideoCall />;
+  return (
+    <SocketContextWrap>
+      <VideoCall />
+    </SocketContextWrap>
+  );
 };
 
 export default TestPage;
