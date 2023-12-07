@@ -50,7 +50,7 @@ const SocketContextWrap = ({ children }) => {
       socket.emit("answercall", { signal: data, to: call.from });
     });
     peer.on("stream", (currentStream) => {
-      userVideo.current.srcObject = currentStream;
+      if (userVideo.current) userVideo.current.srcObject = currentStream;
     });
 
     peer.signal(call.signal);
@@ -70,7 +70,7 @@ const SocketContextWrap = ({ children }) => {
       });
     });
     peer.on("stream", (currentStream) => {
-      userVideo.current.srcObject = currentStream;
+      if (userVideo.current) userVideo.current.srcObject = currentStream;
     });
 
     socket.on("callaccepted", (signal) => {

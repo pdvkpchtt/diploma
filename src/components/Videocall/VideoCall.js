@@ -4,14 +4,22 @@ import { motion } from "framer-motion";
 import { useContext, useRef } from "react";
 
 import { SocketContext } from "../SocketContextWrap";
-import Card from "../../shared/ui/Card";
 import Options from "./Options";
+import TextMain from "../../shared/Text/TextMain";
+import { ButtonGhost } from "../../shared/ui/Button";
 
 const VideoCall = () => {
   const constraintsRef = useRef(null);
 
-  const { name, callAccepted, myVideo, userVideo, callEnded, stream, call } =
-    useContext(SocketContext);
+  const {
+    answerCall,
+    callAccepted,
+    myVideo,
+    userVideo,
+    callEnded,
+    stream,
+    call,
+  } = useContext(SocketContext);
 
   return (
     <>
@@ -21,7 +29,13 @@ const VideoCall = () => {
           ref={constraintsRef}
           className="bg-black rounded-[8px] w-full relative h-full flex items-end justify-end"
         >
-          <viedo playsInline autoplay ref={userVideo} className={"w-full"} />
+          <video
+            playsInline
+            muted
+            ref={userVideo}
+            className="w-full h-full"
+            autoPlay
+          ></video>
 
           {/* my window */}
           {stream && (
@@ -56,7 +70,17 @@ const VideoCall = () => {
         {/*} )} */}
       </div>
 
-      <Options />
+      <Options>
+        {call.isReceivedCall && !callAccepted && (
+          <div className="flex justify-center">
+            {/* <TextMain
+              text={call.name + " вызывает"}
+              style="text-[16px] font-medium"
+            /> */}
+            <ButtonGhost text="Принять вызов" onClick={answerCall} />
+          </div>
+        )}
+      </Options>
     </>
   );
 };
