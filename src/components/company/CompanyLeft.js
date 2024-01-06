@@ -116,54 +116,58 @@ const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
           {/* about */}
         </Card>
 
-        {/* hrs */}
-        <Card
-          style="[@media(hover)]:max-w-[260px] w-full flex flex-col gap-[8px]"
-          padding={12}
-        >
-          <div
-            className="flex flex-row gap-[4px] cursor-pointer"
-            onClick={() => setModalState(true)}
-          >
-            <TextMain
-              text={data.hrcount}
-              style="font-normal text-[14px] leading-[18px] tracking-[-0.015em]"
-            />
-            <TextSecondary
-              text={getNoun(data.hrcount)}
-              style="font-normal text-[14px] leading-[18px] tracking-[-0.015em]"
-            />
-          </div>
-        </Card>
-        {/* hrs */}
+        {!withoutActions && (
+          <>
+            {/* hrs */}
+            <Card
+              style="[@media(hover)]:max-w-[260px] w-full flex flex-col gap-[8px]"
+              padding={12}
+            >
+              <div
+                className="flex flex-row gap-[4px] cursor-pointer"
+                onClick={() => setModalState(true)}
+              >
+                <TextMain
+                  text={data.hrcount}
+                  style="font-normal text-[14px] leading-[18px] tracking-[-0.015em]"
+                />
+                <TextSecondary
+                  text={getNoun(data.hrcount)}
+                  style="font-normal text-[14px] leading-[18px] tracking-[-0.015em]"
+                />
+              </div>
+            </Card>
+            {/* hrs */}
 
-        {/* buttons */}
-        <Card
-          style="max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] flex flex-col gap-[8px]"
-          padding={12}
-        >
-          <ButtonGhost
-            text="Добавить вакансию"
-            onClick={() =>
-              router.push("/companyprofile/createvacancy", {
-                query: { data: "update" },
-              })
-            }
-          >
-            <AddVacancyIcon fill={"#5875e8"} />
-          </ButtonGhost>
-          <ButtonGhost
-            text="Редактировать"
-            onClick={() =>
-              router.push("/companyprofile/edit", {
-                query: { data: "update" },
-              })
-            }
-          >
-            <PenIcon fill={"#5875e8"} />
-          </ButtonGhost>
-        </Card>
-        {/* buttons */}
+            {/* buttons */}
+            <Card
+              style="max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] flex flex-col gap-[8px]"
+              padding={12}
+            >
+              <ButtonGhost
+                text="Добавить вакансию"
+                onClick={() =>
+                  router.push("/companyprofile/createvacancy", {
+                    query: { data: "update" },
+                  })
+                }
+              >
+                <AddVacancyIcon fill={"#5875e8"} />
+              </ButtonGhost>
+              <ButtonGhost
+                text="Редактировать"
+                onClick={() =>
+                  router.push("/companyprofile/edit", {
+                    query: { data: "update" },
+                  })
+                }
+              >
+                <PenIcon fill={"#5875e8"} />
+              </ButtonGhost>
+            </Card>
+            {/* buttons */}
+          </>
+        )}
       </div>
 
       <RecrutersModal

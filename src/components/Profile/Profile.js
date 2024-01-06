@@ -14,7 +14,7 @@ const Profile = ({ data, userId }) => {
     data?.role?.includes("hr")
       ? [
           {
-            id: 1,
+            id: 0,
             active: true,
             name: "История собеседований",
             component: <ProfileBookmarks userId={userId} others />,

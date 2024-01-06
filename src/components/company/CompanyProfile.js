@@ -10,7 +10,7 @@ import CompanyVacancies from "./CompanyVacancies";
 const CompanyProfile = ({ data, role, userId }) => {
   const [navState, setNavState] = useState([
     {
-      id: 1,
+      id: 0,
       active: true,
       name: "Вакансии",
       component: <CompanyVacancies role={role} id={data.id} userId={userId} />,

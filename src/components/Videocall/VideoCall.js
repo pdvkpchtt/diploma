@@ -19,6 +19,7 @@ const VideoCall = () => {
     callEnded,
     stream,
     call,
+    canvasRef,
   } = useContext(SocketContext);
 
   return (
@@ -33,20 +34,20 @@ const VideoCall = () => {
             playsInline
             muted
             ref={userVideo}
-            className="w-full h-full"
+            className="w-full h-full scale-x-[-1]"
             autoPlay
           ></video>
 
           {/* my window */}
           {stream && (
             <motion.div
-              drag={callAccepted && !callEnded}
+              // drag={callAccepted && !callEnded}
               dragConstraints={constraintsRef}
               dragMomentum={false}
               style={{ touchAction: "none" }}
               className={`bg-[#212121] absolute ${
                 callAccepted && !callEnded
-                  ? "w-[200px] h-[150px] p-[6px] rounded-[10px]"
+                  ? "w-[400px] h-[300px] p-[6px] rounded-[10px]"
                   : "w-full h-full p-[0px] rounded-[8px]"
               } transition-all duration-500`}
             >
@@ -55,6 +56,10 @@ const VideoCall = () => {
                   callAccepted && !callEnded ? "rounded-[4px]" : "rounded-[8px]"
                 } transition-all duration-500 w-full h-full flex text-center items-center`}
               >
+                <canvas
+                  ref={canvasRef}
+                  className="absolute w-full z-[100] h-full"
+                />
                 <video
                   playsInline
                   muted
