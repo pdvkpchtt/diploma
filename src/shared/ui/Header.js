@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import CandidatesIcon from "../icons/CandidatesIcon";
 
 // import HomeIcon from "../icons/HomeIcon";
 // import SearchIcon from "../icons/SearchIcon";
@@ -34,8 +35,8 @@ const Header = ({ role }) => {
             <SearchIcon />
             <MessengerIcon /> */}
             <JobIcon />
+            <CandidatesIcon />
             <TestIcon />
-            <DemoIcon />
             <ProfileIcon role={role} />
           </div>
 

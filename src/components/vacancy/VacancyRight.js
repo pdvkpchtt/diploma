@@ -40,10 +40,7 @@ const VacancyRight = ({ data, role = "student", userId }) => {
           </OneIconButton>
 
           <div className="flex flex-row gap-[6px] items-center">
-            {role === "student" ||
-              (role.includes("hr") && (
-                <BookmarkIcon item={data} userId={userId} />
-              ))}
+            {role === "student" && <BookmarkIcon item={data} userId={userId} />}
           </div>
         </div>
       </div>
