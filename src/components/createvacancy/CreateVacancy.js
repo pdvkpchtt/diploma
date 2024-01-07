@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import CompanyLeft from "../../components/company/CompanyLeft";
-// import CreateVacancyRight from "./CreateVacancyRight";
+import CreateVacancyRight from "./CreateVacancyRight";
 
 const CreateVacancy = ({ data, skills }) => {
   const [dataToUpdate, setDataToUpdate] = useState({
@@ -13,7 +13,6 @@ const CreateVacancy = ({ data, skills }) => {
     conditions: "",
     waitings: "",
     vacArea: [],
-    Location: [],
     format: { label: "" },
     contract: { label: "" },
     experience: { label: "" },
@@ -32,11 +31,11 @@ const CreateVacancy = ({ data, skills }) => {
   return (
     <>
       <CompanyLeft data={data} withoutActions />
-      {/* <CreateVacancyRight
+      <CreateVacancyRight
         skills={skills}
         dataToUpdate={dataToUpdate}
         setDataToUpdate={setDataToUpdate}
-      /> */}
+      />
     </>
   );
 };

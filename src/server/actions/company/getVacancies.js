@@ -3,16 +3,13 @@
 import { getServSession } from "../../../app/api/auth/[...nextauth]/route";
 import { prisma } from "../../db";
 
-export const getCompanyVacancies = async (id, cursor) => {
+export const getVacancies = async (cursor, filters) => {
   const session = await getServSession();
 
-  console.log(id);
   const vacancy = await prisma.vacancy.findMany({
     take: 11,
     ...(cursor && cursor.length > 0 && { cursor: { id: cursor }, skip: 1 }),
-    where: { companyId: id },
     select: {
-      createdAt: true,
       id: true,
       name: true,
       description: true,
@@ -23,18 +20,6 @@ export const getCompanyVacancies = async (id, cursor) => {
       salaryEnd: true,
       distantWork: true,
 
-      hrCreator: {
-        select: {
-          user: {
-            select: {
-              id: true,
-              username: true,
-              name: true,
-              image: true,
-            },
-          },
-        },
-      },
       format: {
         select: {
           id: true,
@@ -82,10 +67,76 @@ export const getCompanyVacancies = async (id, cursor) => {
       },
       VacancySkills: true,
       Bookmarks: true,
+      hrCreator: {
+        select: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              name: true,
+              image: true,
+            },
+          },
+        },
+      },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    where: filters?.startFiltering
+      ? filters?.input.length > 0
+        ? {
+            name: { contains: filters?.input, mode: "insensitive" },
+
+            VacancySkills:
+              filters?.VacancySkills?.length > 0
+                ? {
+                    some: {
+                      name: {
+                        in: filters?.VacancySkills?.map(
+                          (item) => true && item.name
+                        ),
+                      },
+                    },
+                  }
+                : {},
+            vacArea:
+              filters?.area?.length > 0
+                ? {
+                    some: {
+                      label: {
+                        in: filters?.area?.map((item) => true && item.label),
+                      },
+                    },
+                  }
+                : {},
+          }
+        : {
+            VacancySkills:
+              filters?.VacancySkills?.length > 0
+                ? {
+                    some: {
+                      name: {
+                        in: filters?.VacancySkills?.map(
+                          (item) => true && item.name
+                        ),
+                      },
+                    },
+                  }
+                : {},
+            vacArea:
+              filters?.area?.length > 0
+                ? {
+                    some: {
+                      label: {
+                        in: filters?.area?.map((item) => true && item.label),
+                      },
+                    },
+                  }
+                : {},
+          }
+      : filters?.input.length > 0
+      ? {
+          name: { contains: filters?.input, mode: "insensitive" },
+        }
+      : {},
   });
 
   const hasNextPage = vacancy.length > 10;
@@ -99,19 +150,17 @@ export const getCompanyVacancies = async (id, cursor) => {
       name: vacancy.name,
       salaryStart: vacancy.salaryStart,
       salaryEnd: vacancy.salaryEnd,
-      distantWork: vacancy.distantWork,
       contract: vacancy.contract,
       shortDescription: vacancy.shortDescription,
       description: vacancy.description,
       vacArea: vacancy.vacArea,
       company: vacancy.Company,
       VacancySkills: vacancy.VacancySkills,
-      VacancyReply: vacancy?.VacancyReply,
       currency: vacancy.currency,
       Bookmarks: vacancy.Bookmarks,
       Company: vacancy.Company,
+      distantWork: vacancy.distantWork,
       hrCreator: vacancy?.hrCreator?.user,
-      myVac: vacancy?.hrCreator?.id === session?.user?.id,
       myVac: vacancy?.hrCreator?.user?.id === session?.user?.id,
       partOfTeam: vacancy?.Company?.HR?.find(
         (i) => i.userId === session?.user?.id

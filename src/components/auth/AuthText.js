@@ -24,7 +24,7 @@ const AuthText = () => {
   return (
     <div className="flex mt-[-45px] [@media(pointer:coarse)]:mt-[-2px] flex-col gap-[5px] max-w-[484px] w-full">
       <p className="text-[#5875e8] font-bold select-none text-[48px] leading-[58px] tracking-[-0.075em] [@media(pointer:coarse)]:text-[40px] [@media(pointer:coarse)]:leading-[48px] [@media(pointer:coarse)]:tracking-[-0.0625em]">
-        TalentWave
+        SwiftHire
       </p>
 
       <div className="flex flex-row flex-wrap">

@@ -78,6 +78,7 @@ model EducationLevel {
   id      String    @id @default(cuid())
   label    String
   user    User[]
+  vacancy Vacancy[]
 }
 
 model UserSkills {
@@ -155,6 +156,9 @@ model Vacancy {
 
   industryId String?
   Industry   Industry? @relation(fields: [industryId], references: [id])
+
+  educationLevelId String?
+  educationLevel   EducationLevel? @relation(fields: [educationLevelId], references: [id])
 
   hrCreatorId  String?
   hrCreator    Hr?            @relation(fields: [hrCreatorId], references: [id])
@@ -237,17 +241,17 @@ model Skill {
   name          String          @db.Text
   type          String          @default("")
   UserSkills    UserSkills[]
-  VacancySkills VacancySkills[]
   areaId        String?
   area          Area?           @relation(fields: [areaId], references: [id])
 }
 
 model VacancySkills {
   id        String  @id @default(cuid())
+  name      String
   vacancyId String  @db.Text
-  skillId   String  @db.Text
   vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
-  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  area      String?
+  type      String
 }
 
 model Area {

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 // import SearchIcon from "../icons/SearchIcon";
 // import MessengerIcon from "../icons/MessengerIcon";
 import DemoIcon from "../icons/DemoIcon";
+import JobIcon from "../icons/JobIcon";
 import ProfileIcon from "../icons/ProfileIcon";
 import TestIcon from "../icons/TestIcon";
 
@@ -32,7 +33,7 @@ const Header = ({ role }) => {
             {/* <HomeIcon />
             <SearchIcon />
             <MessengerIcon /> */}
-            <div className="w-[25px] h-[25px] bg-[#f6f6f8] dark:bg-[#141414]" />
+            <JobIcon />
             <TestIcon />
             <DemoIcon />
             <ProfileIcon role={role} />

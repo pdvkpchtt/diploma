@@ -19,7 +19,7 @@ const SkillCard = ({
     <div
       className={`${style} ${
         hard &&
-        "bg-[#74899B] bg-opacity-[8%] text-[#F56C89] hover:text-[#E45775] active:text-[#C9506A]"
+        "bg-[#5875E8] hover:bg-[#3A56C5] active:bg-[#2C429C] hover:bg-opacity-[70%] active:bg-opacity-[70%] bg-opacity-[70%] text-[#fff]"
       } ${
         soft &&
         "bg-[#74899B] bg-opacity-[8%] text-[#5875e8] hover:text-[#3A56C5] active:text-[#2C429C]"
@@ -31,8 +31,8 @@ const SkillCard = ({
         if (!noCopy) {
           toast(`🗂 Текст скопирован`, {
             position: isMobile ? "top-center" : "bottom-right",
-            autoClose: 2000,
-            hideProgressBar: false,
+            autoClose: 4000,
+            hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,
