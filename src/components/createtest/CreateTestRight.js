@@ -16,15 +16,24 @@ import ArrowLeftIcon from "../../shared/icons/ArrowLeftIcon";
 import PlusIcon from "../../shared/icons/PlusIcon";
 import TrashIcon from "../../shared/icons/TrashIcon";
 import CheckIcon from "../../shared/icons/CheckIcon";
-import SquarePlus from "@/shared/icons/SquarePlus";
-import SquareMinus from "@/shared/icons/SquareMinus";
-import CheckBox from "@/shared/ui/CheckBox";
-import TextSecondary from "@/shared/Text/TextSecondary";
+import SquarePlus from "../../shared/icons/SquarePlus";
+import SquareMinus from "../../shared/icons/SquareMinus";
+import CheckBox from "../../shared/ui/CheckBox";
+import TextSecondary from "../../shared/Text/TextSecondary";
+import SkillCard from "../../shared/ui/SkillCard";
+import DropDownWithChoise from "../../shared/ui/DropDownWithChoise";
+import AddCityIcon from "../../shared/icons/AddCityIcon";
+import { createTest } from "@/server/actions/createtest/createTest";
+import DropDownWithSearch from "@/shared/ui/DropDownWithSearch";
 
-const CreateVacancyRight = ({
+const CreateTestRight = ({
   dataToUpdate,
   setDataToUpdate,
   deleteHandler,
+  areas,
+  area,
+  setArea,
+  compId,
 }) => {
   const router = useRouter();
 
@@ -35,6 +44,7 @@ const CreateVacancyRight = ({
   // validate
 
   const [littleLoader, setLittleLoader] = useState(false);
+  const [state6, setState6] = useState(false);
 
   return (
     <div className="w-full flex flex-col [@media(hover)]:ml-[276px] [@media(hover)]:mt-[24px] hideScrollbarNavMobile">
@@ -48,70 +58,14 @@ const CreateVacancyRight = ({
           <div
             onClick={async () => {
               setLittleLoader(true);
-              // const res = await createVacancyHandler({
-              //   ...dataToUpdate,
-              //   VacancySkills: dataToUpdate.VacancySkills.map(
-              //     (item) =>
-              //       true && {
-              //         name: item?.name,
-              //         type: item.type,
-              //         area: item?.area?.label,
-              //       }
-              //   ),
-              // });
-              // console.log(res, "asswe");
-              // setStatus(res?.message);
-              // if (!res) {
-              //   toast(`💼 Вакансия создана`, {
-              //     position: isMobile ? "top-center" : "bottom-right",
-              //     autoClose: 4000,
-              //     hideProgressBar: true,
-              //     closeOnClick: true,
-              //     pauseOnHover: false,
-              //     draggable: true,
-              //     progress: undefined,
-              //     // theme: "dark",
-              //     progressStyle: { background: "#5875e8" },
-              //     containerId: "forCopy",
-              //   });
-              //   setDataToUpdate({
-              //     name: "",
-              //     shortDescription: "",
-              //     description: "",
-              //     conditions: "",
-              //     waitings: "",
-              //     vacArea: [],
-              //     format: { label: "" },
-              //     contract: { label: "" },
-              //     experience: { label: "" },
-              //     EducationLevel: { label: "" },
-              //     salaryStart: "",
-              //     salaryEnd: "",
-              //     currency: { label: "" },
-              //     VacancySkills: [],
-              //     distantWork: false,
 
-              //     priceByTalk: false,
-              //   });
-              //   router.refresh();
-              //   setLittleLoader(false);
-              // } else {
-              //   setLittleLoader(false);
-              //   toast(`🙇 Cорри, что-то пропущено`, {
-              //     position: isMobile ? "top-center" : "bottom-right",
-              //     autoClose: 4000,
-              //     hideProgressBar: true,
-              //     closeOnClick: true,
-              //     pauseOnHover: false,
-              //     draggable: true,
-              //     progress: undefined,
-              //     // theme: "dark",
-              //     progressStyle: { background: "#5875e8" },
-              //     containerId: "forCopy",
-              //   });
+              const res = await createTest({
+                area,
+                test: dataToUpdate,
+                compId,
+              });
 
-              //   setLittleLoader(false);
-              // }
+              setLittleLoader(false);
             }}
             className={`
               px-[12px] py-[8px] rounded-[16px] cursor-pointer transition duration-[250ms] select-none h-[36px] w-[44px]
@@ -144,10 +98,29 @@ const CreateVacancyRight = ({
       {/* header */}
       {/* body */}
       <div
-        className={`${"[@media(hover)]:h-fit"} [@media(hover)]:max-h-[calc(100%)] hideScrollbarNavMobile  [@media(hover)]:overflow-y-auto flex flex-col gap-[16px] [@media(pointer:coarse)]:gap-[12px]`}
+        className={`${"[@media(hover)]:pb-[24px]"} hideScrollbarNavMobile flex flex-col gap-[16px] [@media(pointer:coarse)]:gap-[12px]`}
       >
         {/* первая сосиска */}
         <div className="flex bg-white dark:bg-[#212122] flex-col gap-[16px] p-[12px] [@media(hover)]:rounded-b-[20px] [@media(pointer:coarse)]:rounded-[20px]">
+          {/* area */}
+          <div className="flex flex-col">
+            <TextSecondary
+              text={"Сфера"}
+              style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] mb-[6px]"
+            />
+            <DropDownWithSearch
+              state={state6}
+              setState={setState6}
+              city={area?.label?.length === 0 ? "" : area?.label}
+              setCity={(val) => {
+                setArea(val);
+              }}
+              items={areas}
+              placeholder="Выберите сферу"
+            />
+          </div>
+          {/* area */}
+
           {dataToUpdate?.map((i, key) => (
             <div className="flex flex-col gap-[12px]" key={key}>
               <Input
@@ -216,36 +189,38 @@ const CreateVacancyRight = ({
                       />
                     </div>
                     <div className="flex flex-row items-center gap-[24px]">
-                      <div className="flex flex-row items-center">
-                        <SquarePlus
-                          styled={"mt-[-6px]"}
-                          onClick={() =>
-                            setDataToUpdate(
-                              dataToUpdate.map((item, index) =>
-                                index === key
-                                  ? {
-                                      ...item,
-                                      answers: [
-                                        ...item.answers,
-                                        {
-                                          id: uuid(),
-                                          answer: "",
-                                          rightAnswer: false,
-                                        },
-                                      ],
-                                    }
-                                  : item
+                      {i.answers.length === key2 + 1 && (
+                        <div className="flex flex-row items-center">
+                          <SquarePlus
+                            styled={"mt-[-6px]"}
+                            onClick={() =>
+                              setDataToUpdate(
+                                dataToUpdate.map((item, index) =>
+                                  index === key
+                                    ? {
+                                        ...item,
+                                        answers: [
+                                          ...item.answers,
+                                          {
+                                            id: uuid(),
+                                            answer: "",
+                                            rightAnswer: false,
+                                          },
+                                        ],
+                                      }
+                                    : item
+                                )
                               )
-                            )
-                          }
-                        />
+                            }
+                          />
 
-                        <TextSecondary
-                          text="Добавить вариант ответа"
-                          style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] ml-[6px]"
-                        />
-                      </div>
-                      {key2 !== 0 && (
+                          <TextSecondary
+                            text="Добавить вариант ответа"
+                            style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] ml-[6px]"
+                          />
+                        </div>
+                      )}
+                      {i.answers.length > 1 && (
                         <div className="flex flex-row items-center">
                           <SquareMinus
                             styled={"mt-[-6px]"}
@@ -339,4 +314,4 @@ const CreateVacancyRight = ({
   );
 };
 
-export default CreateVacancyRight;
+export default CreateTestRight;

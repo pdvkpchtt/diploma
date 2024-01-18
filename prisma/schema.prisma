@@ -186,6 +186,7 @@ model Test {
   Company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   areaId    String
   Area      Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now())
 }
 
 model Question {

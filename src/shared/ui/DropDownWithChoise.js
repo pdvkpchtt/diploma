@@ -13,10 +13,6 @@ const DropDownWithChoise = ({
   placeholder = "",
   setCity = () => {},
 }) => {
-  useEffect(() => {
-    // getCitiesFromApi("Уфа");
-  }, []);
-
   const isMobile = useMediaQuery({ query: "(pointer:coarse)" });
 
   const ref = useRef();

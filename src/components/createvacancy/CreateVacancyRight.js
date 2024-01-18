@@ -225,9 +225,7 @@ const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
       {/* header */}
       {/* body */}
       <div
-        className={`${
-          loading ? "[@media(hover)]:h-full" : "[@media(hover)]:h-fit"
-        } [@media(hover)]:max-h-[calc(100%)] hideScrollbarNavMobile  [@media(hover)]:overflow-y-auto flex flex-col gap-[16px] [@media(pointer:coarse)]:gap-[12px]`}
+        className={` h-fit hideScrollbarNavMobile  flex flex-col gap-[16px] [@media(pointer:coarse)]:gap-[12px]`}
       >
         {!loading ? (
           <>

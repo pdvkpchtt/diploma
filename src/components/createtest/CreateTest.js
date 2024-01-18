@@ -4,9 +4,9 @@ import { useState } from "react";
 import { uuid } from "uuidv4";
 
 import CompanyLeft from "../../components/company/CompanyLeft";
-import CreateVacancyRight from "./CreateTestRight";
+import CreateTestRight from "./CreateTestRight";
 
-const CreateTest = ({ data }) => {
+const CreateTest = ({ data, areas }) => {
   const [test, setTest] = useState([
     {
       id: uuid(),
@@ -22,6 +22,8 @@ const CreateTest = ({ data }) => {
   ]);
   console.log(test);
 
+  const [area, setArea] = useState({ label: "" });
+
   const deleteHandler = (id, setFunc, state) => {
     setFunc(state.filter((item) => item.id !== id));
   };
@@ -29,7 +31,11 @@ const CreateTest = ({ data }) => {
   return (
     <>
       <CompanyLeft data={data} withoutActions />
-      <CreateVacancyRight
+      <CreateTestRight
+        compId={data.id}
+        areas={areas}
+        area={area}
+        setArea={setArea}
         dataToUpdate={test}
         setDataToUpdate={(choise) => {
           setTest(choise);
