@@ -48,35 +48,35 @@ model Session {
 }
 
 model User {
-  id             String           @id @default(cuid())
-  name           String?
-  username       String?          @unique
-  birthDate      String?
-  email          String?          @unique
-  emailVerified  DateTime?
-  phone          String?
-  phoneVerified  DateTime?
-  image          String?
-  accounts       Account[]
-  sessions       Session[]
-  role           String?
-  about          String?          @db.Text
-  country        String?          @db.Text
-  city           String?          @db.Text
+  id            String    @id @default(cuid())
+  name          String?
+  username      String?   @unique
+  birthDate     String?
+  email         String?   @unique
+  emailVerified DateTime?
+  phone         String?
+  phoneVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  role          String?
+  about         String?   @db.Text
+  country       String?   @db.Text
+  city          String?   @db.Text
 
   educationLevelId String?
   educationLevel   EducationLevel? @relation(fields: [educationLevelId], references: [id])
 
-  UserArea       UserArea[]
-  UserSkills     UserSkills[]
-  BookMarks      Bookmarks[]
-  Company        Company?
-  HR             Hr[]
+  UserArea   UserArea[]
+  UserSkills UserSkills[]
+  BookMarks  Bookmarks[]
+  Company    Company?
+  HR         Hr[]
 }
 
 model EducationLevel {
   id      String    @id @default(cuid())
-  label    String
+  label   String
   user    User[]
   vacancy Vacancy[]
 }
@@ -88,13 +88,13 @@ model UserSkills {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
 }
-model UserArea {
-  id      String @id @default(cuid())
-  label   String
-  userId  String @db.Text
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
 
+model UserArea {
+  id     String @id @default(cuid())
+  label  String
+  userId String @db.Text
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
 model Company {
   id         String           @id @default(cuid())
@@ -114,6 +114,7 @@ model Company {
   industryId String?
   industry   CompanyIndustry? @relation(fields: [industryId], references: [id])
   HR         Hr[]
+  Test       Test[]
 }
 
 model CompanyIndustry {
@@ -138,7 +139,7 @@ model Vacancy {
   salaryStart String?
   salaryEnd   String?
 
-  Bookmarks     Bookmarks[]
+  Bookmarks Bookmarks[]
 
   distantWork Boolean @default(false)
 
@@ -160,16 +161,54 @@ model Vacancy {
   educationLevelId String?
   educationLevel   EducationLevel? @relation(fields: [educationLevelId], references: [id])
 
-  hrCreatorId  String?
-  hrCreator    Hr?            @relation(fields: [hrCreatorId], references: [id])
+  hrCreatorId   String?
+  hrCreator     Hr?             @relation(fields: [hrCreatorId], references: [id])
   VacancySkills VacancySkills[]
-  vacArea    VacArea[]
-  createdAt  DateTime         @default(now())
+  vacArea       VacArea[]
+  VacTests      VacTests[]
+  createdAt     DateTime        @default(now())
 }
+
+model VacTests {
+  id        String    @id @default(cuid())
+  vacancyId String
+  Vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  testId    String
+  Test      Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+}
+
+// test
+model Test {
+  id        String        @id @default(cuid())
+  questions Question[]
+  VacTests  VacTests[]
+  companyId String
+  Company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  areaId    String
+  Area      Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+}
+
+model Question {
+  id      String      @id @default(cuid())
+  text    String
+  answers Answer[]
+  testId  String
+  test    Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
+}
+
+model Answer {
+  id          String      @id @default(cuid())
+  text        String
+  rightAnswer Boolean
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+// test
 
 model Experience {
   id      String    @id @default(cuid())
-  label    String
+  label   String
   vacancy Vacancy[]
 }
 
@@ -194,16 +233,15 @@ model Currency {
 
 model Industry {
   id      String    @id @default(cuid())
-  label    String
+  label   String
   vacancy Vacancy[]
 }
 
 model Format {
   id      String    @id @default(cuid())
-  label    String
+  label   String
   vacancy Vacancy[]
 }
-
 
 model Cities {
   id        String  @id @default(cuid())
@@ -237,12 +275,12 @@ model BigCity {
 }
 
 model Skill {
-  id            String          @id @default(cuid())
-  name          String          @db.Text
-  type          String          @default("")
-  UserSkills    UserSkills[]
-  areaId        String?
-  area          Area?           @relation(fields: [areaId], references: [id])
+  id         String       @id @default(cuid())
+  name       String       @db.Text
+  type       String       @default("")
+  UserSkills UserSkills[]
+  areaId     String?
+  area       Area?        @relation(fields: [areaId], references: [id])
 }
 
 model VacancySkills {
@@ -258,4 +296,5 @@ model Area {
   id    String  @id @default(cuid())
   label String
   skill Skill[]
+  Test  Test[]
 }

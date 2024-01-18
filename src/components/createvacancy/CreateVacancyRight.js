@@ -31,6 +31,62 @@ const maskGenerator = getCurrencyMaskGenerator({
   thousandSeparator: " ",
 });
 
+const dummy = [
+  {
+    question: "Какова разница между нефтью и газом?",
+    answers: [
+      {
+        answer: "Нефть - это жидкое топливо, а газ - это газообразное топливо.",
+        rightAnswer: false,
+      },
+      {
+        answer: "Нефть - это газообразное топливо, а газ - это жидкое топливо.",
+        rightAnswer: true,
+      },
+    ],
+  },
+  {
+    question: "Какой тип нефти вырабатывают в России?",
+    answers: [
+      {
+        answer: "В России вырабатывают нефть типа Западной Сибири.",
+        rightAnswer: true,
+      },
+      {
+        answer: "В России вырабатывают нефть типа Восточной Сибири.",
+        rightAnswer: false,
+      },
+    ],
+  },
+  {
+    question: "Какой способ вырабывает нефть из земли?",
+    answers: [
+      {
+        answer: "Нефть вырабатывается из земли с помощью бурения.",
+        rightAnswer: true,
+      },
+      {
+        answer: "Нефть вырабатывается из земли с помощью выщелачивания.",
+        rightAnswer: false,
+      },
+    ],
+  },
+  {
+    question: "Какой продукт вырабатывается в процессе переработки нефти?",
+    answers: [
+      {
+        answer: "В процессе переработки нефти вырабатывается бензин.",
+        rightAnswer: false,
+      },
+      {
+        answer:
+          "В процессе переработки нефти вырабатывается дизельное топливо.",
+        rightAnswer: true,
+      },
+    ],
+  },
+];
+
 const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
   const router = useRouter();
 

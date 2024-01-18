@@ -30,7 +30,6 @@ const RecrutersModal = ({
     // if (loading) return;
     setLoading(true);
     const data = await fetchGetRecruters(comapnyId, cursor, input);
-    console.log("client recruters", data);
     if (cursor.length) {
       setUsers([...users, ...data.data]);
       setRole(data.role);

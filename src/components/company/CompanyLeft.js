@@ -18,6 +18,7 @@ import RecrutersModal from "./RecrutersModal";
 
 import PenIcon from "../../shared/icons/PenIcon";
 import AddVacancyIcon from "../../shared/icons/AddVacancyIcon";
+import AddTaskIcon from "../../shared/icons/AddTaskIcon";
 
 const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
   const router = useRouter();
@@ -153,6 +154,16 @@ const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
                 }
               >
                 <AddVacancyIcon fill={"#5875e8"} />
+              </ButtonGhost>
+              <ButtonGhost
+                text="Создать тест"
+                onClick={() =>
+                  router.push("/companyprofile/createtest", {
+                    query: { data: "update" },
+                  })
+                }
+              >
+                <AddTaskIcon fill={"#5875e8"} />
               </ButtonGhost>
               <ButtonGhost
                 text="Редактировать"
