@@ -19,8 +19,16 @@ import RecrutersModal from "./RecrutersModal";
 import PenIcon from "../../shared/icons/PenIcon";
 import AddVacancyIcon from "../../shared/icons/AddVacancyIcon";
 import AddTaskIcon from "../../shared/icons/AddTaskIcon";
+import AiIcon from "@/shared/icons/AiIcon";
+import PremiumModal from "./PremiumModal";
 
-const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
+const CompanyLeft = ({
+  navState,
+  data,
+  withoutActions = false,
+  onClick,
+  generations,
+}) => {
   const router = useRouter();
   const ref = useRef(null);
   const isMobile = useMediaQuery({ query: "(pointer:coarse)" });
@@ -31,8 +39,14 @@ const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
     if (dig % 10 > 1 && dig % 10 < 5) return " рекрутера";
     else return " рекрутер";
   };
+  const getNoun2 = (dig) => {
+    if (dig % 10 === 0 || dig % 10 >= 5) return " интеллитестов";
+    if (dig % 10 > 1 && dig % 10 < 5) return " интеллитеста";
+    else return " интеллитест";
+  };
 
   const [modalState, setModalState] = useState(false);
+  const [pitchesModalState, setPitchesModalState] = useState(false);
 
   return (
     <>
@@ -140,6 +154,40 @@ const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
             </Card>
             {/* hrs */}
 
+            {/* generations */}
+            <Card rounded={20} padding={10} style={"flex flex-col gap-[8px]"}>
+              <div className="flex flex-row justify-between items-center">
+                <TextMain
+                  text="Премиум"
+                  style={
+                    "text-[18px] font-medium leading-[22px] tracking-[-0.45px] flex-1"
+                  }
+                />
+                <p
+                  className="text-[#5875e8] text-[13px] cursor-pointer leading-[16px] font-medium tracking-[-0.325px] hover:text-[#3A56C5] active:text-[#2C429C] transition duration-[250ms]"
+                  onClick={() => setPitchesModalState(true)}
+                >
+                  Что это такое?
+                </p>
+              </div>
+              <div
+                className={`${""} p-[12px] rounded-[20px] items-center flex flex-row max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] bg-[#74899B] bg-opacity-[8%]`}
+              >
+                <div
+                  className={`group text-center h-[28px] w-fit whitespace-nowrap items-center flex-row gap-[8px] flex 
+          font-medium leading-[20px] text-[16px] tracking-[-0.015em]
+       cursor-default select-none transition duration-[250ms] text-[#2с2с2с] dark:text-[#fff]`}
+                >
+                  <>
+                    <AiIcon black blue={false} />
+                    {generations + getNoun2(generations)}
+                  </>
+                  {/* )} */}
+                </div>
+              </div>
+            </Card>
+            {/* generations */}
+
             {/* buttons */}
             <Card
               style="max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] flex flex-col gap-[8px]"
@@ -185,6 +233,10 @@ const CompanyLeft = ({ navState, data, withoutActions = false, onClick }) => {
         comapnyId={data.id}
         modalState={modalState}
         setModalState={setModalState}
+      />
+      <PremiumModal
+        modalState={pitchesModalState}
+        setModalState={setPitchesModalState}
       />
     </>
   );

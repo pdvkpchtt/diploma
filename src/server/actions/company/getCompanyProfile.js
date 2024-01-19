@@ -30,6 +30,7 @@ export const getCompanyProfile = async ({ userId }) => {
               id: true,
               email: true,
               role: true,
+              plan: true,
             },
           },
         },
@@ -53,5 +54,6 @@ export const getCompanyProfile = async ({ userId }) => {
     updatedAt: companyInfo?.company?.updatedAt,
     hrcount: companyInfo?.company?.HR?.filter((i) => i.dataVerified !== null)
       ?.length,
+    generationsCount: companyInfo?.company?.user?.plan?.generations,
   };
 };

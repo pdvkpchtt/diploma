@@ -46,16 +46,19 @@ const Modal = ({
             animate={"isOpen"}
             exit={"exit"}
             variants={modalVariant}
+            onClick={handleClose}
+          ></motion.div>
+          <motion.div
+            className={`w-[630px] [@media(pointer:coarse)]:hidden [@media(pointer:coarse)]:h-[0px] [@media(pointer:coarse)]:w-[0px] [@media(pointer:coarse)]:p-[0px] h-fit [@media(hover)]:fixed dark:bg-[#141414] bg-[#fff] z-[200] bottom-0 left-[50%] ${
+              withScroll ? "px-[12px] pt-[12px]" : "p-[12px]"
+            } rounded-[20px]`}
+            initial={"initial"}
+            animate={"isOpen"}
+            exit={"exit"}
+            variants={containerVariant}
+            style={{ transform: translate }}
           >
-            <motion.div
-              className={`w-[630px] h-fit fixed dark:bg-[#141414] bg-[#fff] bottom-0 left-[50%] ${
-                withScroll ? "px-[12px] pt-[12px]" : "p-[12px]"
-              } rounded-[20px]`}
-              variants={containerVariant}
-              style={{ transform: translate }}
-            >
-              {children}
-            </motion.div>
+            {children}
           </motion.div>
           {/* <div
             className="fixed bg-red-500 z-[55] left-0 top-0 w-full h-full"

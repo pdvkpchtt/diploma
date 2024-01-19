@@ -1,6 +1,7 @@
 import CompanyProfile from "../../components/company/CompanyProfile";
 import { getServSession } from "../../app/api/auth/[...nextauth]/route";
 import { getCompanyProfile } from "../../server/actions/company/getCompanyProfile";
+import { getGenerationsCount } from "../../server/actions/company/getGenerationsCount";
 
 const CompanyPage = async () => {
   const session = await getServSession();
@@ -10,6 +11,8 @@ const CompanyPage = async () => {
     role: "hr",
   });
 
+  const generations = await getGenerationsCount();
+
   console.log(data, "lololo");
 
   return (
@@ -17,6 +20,7 @@ const CompanyPage = async () => {
       data={data}
       role={session.user.role}
       userId={session.user.id}
+      generations={generations}
     />
   );
 };

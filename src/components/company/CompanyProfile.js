@@ -7,7 +7,7 @@ import CompanyLeft from "./CompanyLeft";
 import CompanyRight from "./CompanyRight";
 import CompanyVacancies from "./CompanyVacancies";
 
-const CompanyProfile = ({ data, role, userId }) => {
+const CompanyProfile = ({ data, role, userId, generations }) => {
   const [navState, setNavState] = useState([
     {
       id: 0,
@@ -28,7 +28,11 @@ const CompanyProfile = ({ data, role, userId }) => {
         useState={(value) => handleClick(value)}
         layoutId="mobile"
       />
-      <CompanyLeft navState={navState[0].active} data={data} />
+      <CompanyLeft
+        navState={navState[0].active}
+        data={data}
+        generations={generations}
+      />
       <CompanyRight
         handleClick={(value) => handleClick(value)}
         navState={navState}

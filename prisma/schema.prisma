@@ -72,6 +72,19 @@ model User {
   BookMarks  Bookmarks[]
   Company    Company?
   HR         Hr[]
+  
+  planId String?
+  plan   Plan?   @relation(fields: [planId], references: [id])
+}
+
+model Plan {
+  id                String @id @default(cuid())
+  name              String
+  generations      Int
+  // superPitchesCount Int
+  durationDays      Int    @default(0)
+  price             Int    @default(0)
+  User              User[]
 }
 
 model EducationLevel {
@@ -179,14 +192,15 @@ model VacTests {
 
 // test
 model Test {
-  id        String        @id @default(cuid())
+  id        String          @id @default(cuid())
   questions Question[]
   VacTests  VacTests[]
   companyId String
-  Company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  Company   Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
   areaId    String
-  Area      Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  Area      Area            @relation(fields: [areaId], references: [id], onDelete: Cascade)
   createdAt DateTime        @default(now())
+  type      String          @default("hand")
 }
 
 model Question {

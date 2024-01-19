@@ -65,6 +65,38 @@ const CreateTestRight = ({
                 compId,
               });
 
+              if (!res) {
+                setDataToUpdate([
+                  {
+                    id: uuid(),
+                    question: "",
+                    answers: [
+                      {
+                        id: uuid(),
+                        answer: "",
+                        rightAnswer: true,
+                      },
+                    ],
+                  },
+                ]);
+                setArea({ label: "" });
+
+                toast(`✅ Тест успешно создан`, {
+                  position: isMobile ? "top-center" : "bottom-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  // theme: "dark",
+                  progressStyle: { background: "#5875e8" },
+                  containerId: "forCopy",
+                });
+              } else {
+                setStatus(res.message);
+              }
+
               setLittleLoader(false);
             }}
             className={`
@@ -102,6 +134,14 @@ const CreateTestRight = ({
       >
         {/* первая сосиска */}
         <div className="flex bg-white dark:bg-[#212122] flex-col gap-[16px] p-[12px] [@media(hover)]:rounded-b-[20px] [@media(pointer:coarse)]:rounded-[20px]">
+          {status !== null && (
+            <div className="w-full text-center">
+              <p className="text-[13px] leading-[16px] tracking-[-0.351px] mt-[3px] text-[#F0BB31]">
+                {status}
+              </p>
+            </div>
+          )}
+
           {/* area */}
           <div className="flex flex-col">
             <TextSecondary
@@ -114,6 +154,8 @@ const CreateTestRight = ({
               city={area?.label?.length === 0 ? "" : area?.label}
               setCity={(val) => {
                 setArea(val);
+
+                if (status !== null) setStatus(null);
               }}
               items={areas}
               placeholder="Выберите сферу"
@@ -133,6 +175,7 @@ const CreateTestRight = ({
                       index === key ? { ...item, question: val } : item
                     )
                   );
+                  if (status !== null) setStatus(null);
                 }}
               />
 
@@ -161,12 +204,13 @@ const CreateTestRight = ({
                               : item
                           )
                         );
+                        if (status !== null) setStatus(null);
                       }}
                     />
                     <div className="flex flex-row items-center">
                       <CheckBox
                         active={i2.rightAnswer}
-                        onClick={() =>
+                        onClick={() => {
                           setDataToUpdate(
                             dataToUpdate.map((item, index) =>
                               index === key
@@ -180,8 +224,9 @@ const CreateTestRight = ({
                                   }
                                 : item
                             )
-                          )
-                        }
+                          );
+                          if (res !== null) setStatus(null);
+                        }}
                       />
                       <TextSecondary
                         text="Правильный ответ"
@@ -193,7 +238,7 @@ const CreateTestRight = ({
                         <div className="flex flex-row items-center">
                           <SquarePlus
                             styled={"mt-[-6px]"}
-                            onClick={() =>
+                            onClick={() => {
                               setDataToUpdate(
                                 dataToUpdate.map((item, index) =>
                                   index === key
@@ -210,8 +255,9 @@ const CreateTestRight = ({
                                       }
                                     : item
                                 )
-                              )
-                            }
+                              );
+                              if (status !== null) setStatus(null);
+                            }}
                           />
 
                           <TextSecondary
@@ -224,7 +270,7 @@ const CreateTestRight = ({
                         <div className="flex flex-row items-center">
                           <SquareMinus
                             styled={"mt-[-6px]"}
-                            onClick={() =>
+                            onClick={() => {
                               setDataToUpdate(
                                 dataToUpdate.map((item, index) =>
                                   index === key
@@ -236,8 +282,9 @@ const CreateTestRight = ({
                                       }
                                     : item
                                 )
-                              )
-                            }
+                              );
+                              if (status !== null) setStatus(null);
+                            }}
                           />
 
                           <TextSecondary
@@ -267,11 +314,12 @@ const CreateTestRight = ({
                             {
                               id: uuid(),
                               answer: "",
-                              rightAnswer: false,
+                              rightAnswer: true,
                             },
                           ],
                         },
                       ]);
+                      if (status !== null) setStatus(null);
                     }}
                   >
                     <PlusIcon />
@@ -284,6 +332,7 @@ const CreateTestRight = ({
                       text=""
                       onClick={() => {
                         deleteHandler(i.id, setDataToUpdate, dataToUpdate);
+                        if (status !== null) setStatus(null);
                       }}
                     >
                       <TrashIcon />
@@ -298,6 +347,7 @@ const CreateTestRight = ({
                     text=""
                     onClick={() => {
                       deleteHandler(i.id, setDataToUpdate, dataToUpdate);
+                      if (status !== null) setStatus(null);
                     }}
                   >
                     <TrashIcon />
