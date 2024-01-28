@@ -3,6 +3,7 @@ import Cross2 from "@/shared/icons/Cross2";
 import TextMain from "@/shared/Text/TextMain";
 import TextSecondary from "@/shared/Text/TextSecondary";
 import Modal from "@/shared/ui/Modal";
+import Link from "next/link";
 
 const PremiumModal = ({ modalState = false, setModalState = () => {} }) => {
   return (
@@ -47,6 +48,12 @@ const PremiumModal = ({ modalState = false, setModalState = () => {} }) => {
               }
             />
           </div>
+          <Link
+            href={"/subscriptions"}
+            className="text-[#5875e8] hover:text-[#3A56C5] cursor-pointer mb-[15px] active:text-[#2C429C] transition duration-[250ms] font-normal text-[16px] tracking-[-0.24px] leading-[19px]"
+          >
+            Как получить больше?
+          </Link>
         </div>
       </Modal>
     </>

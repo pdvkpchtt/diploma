@@ -3,13 +3,13 @@
 import { prisma } from "../../db";
 import { getAllAreas } from "../data/getAllAreas";
 
-export const createTest = async ({ area, test, compId }) => {
+export const createTest = async ({ area, test, compId, used = false }) => {
   try {
     const createdTest = await prisma.Test.create({
       data: {
         Company: { connect: { id: compId } },
         Area: { connect: { id: area.id } },
-        type: "hand",
+        type: used === false ? "hand" : "ai",
       },
       select: { id: true },
     });

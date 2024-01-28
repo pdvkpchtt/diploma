@@ -6,7 +6,7 @@ import { uuid } from "uuidv4";
 import CompanyLeft from "../../components/company/CompanyLeft";
 import CreateTestRight from "./CreateTestRight";
 
-const CreateTest = ({ data, areas }) => {
+const CreateTest = ({ data, areas, aiCount }) => {
   const [test, setTest] = useState([
     {
       id: uuid(),
@@ -32,6 +32,7 @@ const CreateTest = ({ data, areas }) => {
     <>
       <CompanyLeft data={data} withoutActions />
       <CreateTestRight
+        aiCount={aiCount}
         compId={data.id}
         areas={areas}
         area={area}

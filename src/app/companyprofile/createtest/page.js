@@ -4,6 +4,7 @@ import { getCompanyProfile } from "../../../server/actions/company/getCompanyPro
 import { getServSession } from "../../api/auth/[...nextauth]/route";
 import { getAllAreas } from "../../../server/actions/data/getAllAreas";
 import CreateTest from "../../../components/createtest/CreateTest";
+import { getGenerationsCount } from "@/server/actions/company/getGenerationsCount";
 
 const CreateTestPage = async () => {
   const session = await getServSession();
@@ -15,10 +16,11 @@ const CreateTestPage = async () => {
   console.log(data);
 
   const areas = await getAllAreas();
+  const aiCount = await getGenerationsCount();
 
   if (!data) redirect("/not_found");
 
-  return <CreateTest data={data} areas={areas} />;
+  return <CreateTest data={data} areas={areas} aiCount={aiCount} />;
 };
 
 export default CreateTestPage;

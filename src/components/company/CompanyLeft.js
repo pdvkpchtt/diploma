@@ -171,7 +171,7 @@ const CompanyLeft = ({
                 </p>
               </div>
               <div
-                className={`${""} p-[12px] rounded-[20px] items-center flex flex-row max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] bg-[#74899B] bg-opacity-[8%]`}
+                className={`p-[12px] rounded-[20px] items-center flex flex-row max-w-[260px] w-full [@media(pointer:coarse)]:max-w-[100%] bg-[#74899B] bg-opacity-[8%]`}
               >
                 <div
                   className={`group text-center h-[28px] w-fit whitespace-nowrap items-center flex-row gap-[8px] flex 
