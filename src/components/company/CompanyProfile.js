@@ -5,6 +5,7 @@ import { useState } from "react";
 import NavigationMobile from "../../shared/ui/NavigationMobile";
 import CompanyLeft from "./CompanyLeft";
 import CompanyRight from "./CompanyRight";
+import CompanyTests from "./CompanyTests";
 import CompanyVacancies from "./CompanyVacancies";
 
 const CompanyProfile = ({ data, role, userId, generations }) => {
@@ -14,6 +15,12 @@ const CompanyProfile = ({ data, role, userId, generations }) => {
       active: true,
       name: "Вакансии",
       component: <CompanyVacancies role={role} id={data.id} userId={userId} />,
+    },
+    {
+      id: 1,
+      active: false,
+      name: "Тесты",
+      component: <CompanyTests role={role} id={data.id} userId={userId} />,
     },
   ]);
 
