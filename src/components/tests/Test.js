@@ -5,25 +5,27 @@ import { Waypoint } from "react-waypoint";
 
 import CustomLoader from "../../shared/ui/CustomLoader";
 import { fetchVacancies } from "../../server/actions/company/fetchVacancies";
-import VacancyCard from "../../shared/ui/VacancyCard";
 import Card from "../../shared/ui/Card";
 import TextMain from "../../shared/Text/TextMain";
 import { LayoutGroup } from "framer-motion";
 import { SearchNavContext } from "./SearchNavContextWrap";
+import TestCard from "@/shared/ui/TestCard";
+import { fetchTestsGlobal } from "@/server/actions/tests/fetchTestsGlobal";
 
 const Test = () => {
-  const { updateVacancies } = useContext(SearchNavContext);
+  const { updatePeople } = useContext(SearchNavContext);
 
   const [cursor, setCursor] = useState("");
   const [hasNextPage, setHasNextPage] = useState(true);
   const [loading, setLoading] = useState(false);
   const [vacs, setVacs] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
   const getVacs = async (cursor) => {
     console.log("fetching");
     // if (loading) return;
     setLoading(true);
-    const data = await fetchVacancies(cursor, updateVacancies);
+    const data = await fetchTestsGlobal(cursor, updatePeople);
     console.log("client vacancies", data);
     if (cursor.length) {
       setVacs([...vacs, ...data.data]);
@@ -38,17 +40,17 @@ const Test = () => {
   useEffect(() => {
     setCursor("");
     getVacs("");
-  }, [updateVacancies?.startFiltering, updateVacancies?.input]);
+  }, [updatePeople?.startFiltering]);
 
   useEffect(() => {
-    if (updateVacancies?.startFiltering) {
+    if (updatePeople?.startFiltering) {
       setCursor("");
       getVacs("");
     }
-  }, [fetchVacancies, updateVacancies]);
+  }, [fetchVacancies, updatePeople]);
 
   return (
-    <>
+    <LayoutGroup>
       {!vacs ? (
         <div className="w-full flex justify-center items-center h-full">
           <CustomLoader diameter={36} />
@@ -59,9 +61,13 @@ const Test = () => {
         </Card>
       ) : (
         <>
-          <LayoutGroup id="search">
+          <LayoutGroup id="wdadwa">
             {vacs.map((item, key) => (
-              <VacancyCard key={key} item={item} />
+              <TestCard
+                item={item}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+              />
             ))}
           </LayoutGroup>
           {hasNextPage ? (
@@ -79,7 +85,7 @@ const Test = () => {
           ) : null}
         </>
       )}
-    </>
+    </LayoutGroup>
   );
 };
 

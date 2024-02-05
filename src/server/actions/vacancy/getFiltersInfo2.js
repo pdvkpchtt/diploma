@@ -28,11 +28,16 @@ export const getFiltersInfo2 = async (cursor) => {
       type: true,
     },
   });
+  const vacArea = await prisma.Area.groupBy({
+    by: ["label"],
+  });
+
   // people
 
   return {
     peoplecity: peoplecity.map((i) => ({ label: i.city })),
     educationLevel: educationLevel,
     userskills: { skills: userskills },
+    vacArea: vacArea,
   };
 };

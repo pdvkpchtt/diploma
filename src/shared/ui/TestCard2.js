@@ -17,9 +17,18 @@ import AiIcon from "../icons/AiIcon";
 import AiIcon2 from "../icons/AiIcon2";
 import Helper from "./Helper";
 import FullTestModal from "@/components/company/FullTestModal";
+import CheckBox from "./CheckBox";
 
-const TestCard = ({ item, selectedId, setSelectedId }) => {
+const TestCard2 = ({
+  item,
+  selectedId,
+  setSelectedId,
+  dataToUpdate,
+  setDataToUpdate = () => {},
+}) => {
   const router = useRouter();
+
+  console.log(dataToUpdate, "as");
 
   const [isOpen, toggle] = useState(false);
   const [deleted, setDeleted] = useState(false);
@@ -36,21 +45,12 @@ const TestCard = ({ item, selectedId, setSelectedId }) => {
     else return " вакансия использует";
   };
 
-  const deleteHanler = async () => {
-    await deleteTest(item.id);
-    setDeleted(true);
-    toggle(false);
-  };
-
   return (
     <>
       <LayoutGroup id={selectedId}>
         {!deleted && (
-          <motion.div
-            layoutId={item.id}
-            className={selectedId === item.id ? `hidden` : ""}
-          >
-            <Card style="flex flex-col gap-[12px]" padding={12}>
+          <motion.div layoutId={item.id}>
+            <div className="flex flex-col gap-[12px]">
               {/* image name time */}
               <div className="flex flex-row justify-between w-full">
                 <div className="flex flex-row gap-[8px] w-full">
@@ -81,13 +81,7 @@ const TestCard = ({ item, selectedId, setSelectedId }) => {
                       style="font-medium text-[16px] w-fit cursor-pointer leading-[19.2px] tracking-[-0.015em]"
                       onClick={() => setSelectedId(item.id)}
                     />
-                    <TextSecondary
-                      text={"@" + item.Company.username}
-                      style="font-medium text-[14px] w-fit cursor-pointer leading-[18px] tracking-[-0.015em]"
-                      onClick={() =>
-                        router.push(`/companyproflie/${item.Company.username}`)
-                      }
-                    />
+
                     <TextSecondary
                       text={
                         item.questionsLen +
@@ -106,21 +100,52 @@ const TestCard = ({ item, selectedId, setSelectedId }) => {
                         <AiIcon2 />
                       </Helper>
                     )}
-                    <DotsIcon onClick={() => toggle(true)} />
                   </div>
                 </div>
               </div>
               {/* image name time */}
 
               {/* Area */}
-              <SkillCard
-                area
-                hard={false}
-                style="mr-[4px]"
-                text={item.Area.label}
-              />
+              <div className="w-full flex justify-between items-center">
+                <SkillCard
+                  area
+                  hard={false}
+                  style="mr-[4px]"
+                  text={item.Area.label}
+                />
+
+                <div className="flex flex-row gap-[6px] items-center">
+                  <CheckBox
+                    active={
+                      dataToUpdate.TestsIds.filter((i) => i === item.id)
+                        .length === 1
+                    }
+                    onClick={() => {
+                      if (
+                        dataToUpdate.TestsIds.filter((i) => i === item.id)
+                          .length === 1
+                      )
+                        setDataToUpdate({
+                          ...dataToUpdate,
+                          TestsIds: dataToUpdate.TestsIds.filter(
+                            (i) => i !== item.id
+                          ),
+                        });
+                      else
+                        setDataToUpdate({
+                          ...dataToUpdate,
+                          TestsIds: [...dataToUpdate.TestsIds, item.id],
+                        });
+                    }}
+                  />
+                  <TextSecondary
+                    text={"Прикрепить к вакансии"}
+                    style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em]"
+                  />
+                </div>
+              </div>
               {/* Area */}
-            </Card>
+            </div>
           </motion.div>
         )}
         {selectedId == item.id && (
@@ -131,28 +156,8 @@ const TestCard = ({ item, selectedId, setSelectedId }) => {
           />
         )}
       </LayoutGroup>
-
-      {/* modal */}
-      <BottomModal
-        isOpen={isOpen}
-        handleClose={() => toggle(false)}
-        translate="translate(-50%, 0%)"
-      >
-        <div className="h-full w-full px-[12px] pt-[12px] pb-[24px]">
-          <div
-            className="bg-[#74899B] bg-opacity-[8%] rounded-[8px] hover:bg-[#647f98] hover:bg-opacity-[15%] cursor-pointer transition duration-[250ms] p-[16px]"
-            onClick={() => deleteHanler()}
-          >
-            <TextMain
-              text="Удалить тест"
-              style="font-medium text-[16px] leading-[20px] tracking-[-0.015em]"
-            />
-          </div>
-        </div>
-      </BottomModal>
-      {/* modal */}
     </>
   );
 };
 
-export default TestCard;
+export default TestCard2;

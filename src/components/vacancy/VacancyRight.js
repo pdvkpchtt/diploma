@@ -14,6 +14,11 @@ import EmptyAvatar from "../../shared/ui/EmptyAvatar";
 
 import ArrowLeftIcon from "../../shared/icons/ArrowLeftIcon";
 import BookmarkIcon from "../../shared/icons/BookmarkIcon";
+import { LayoutGroup } from "framer-motion";
+import CustomLoader from "@/shared/ui/CustomLoader";
+import TestCard from "@/shared/ui/TestCard";
+import { Waypoint } from "react-waypoint";
+import TestCard3 from "@/shared/ui/TestCard3";
 
 const VacancyRight = ({ data, role = "student", userId }) => {
   const router = useRouter();
@@ -21,6 +26,7 @@ const VacancyRight = ({ data, role = "student", userId }) => {
 
   const [modalState, setModalState] = useState(false);
   const [modalExplain, setModalExplain] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   console.log(data, "vac data");
 
@@ -202,6 +208,26 @@ const VacancyRight = ({ data, role = "student", userId }) => {
             </div>
           )}
           {/* contact face */}
+
+          {role?.includes("hr") && data?.VacTests?.length > 0 && (
+            <LayoutGroup>
+              <TextMain
+                text={"Тесты"}
+                style="font-semibold text-[14px] w-full leading-[18px] mb-[-12px] tracking-[-0.182px]"
+              />
+              {!data?.VacTests ? null : (
+                <div className="flex flex-col gap-[12px] w-full">
+                  {data?.VacTests?.map((item, key) => (
+                    <TestCard3
+                      item={item.Test}
+                      selectedId={selectedId}
+                      setSelectedId={setSelectedId}
+                    />
+                  ))}
+                </div>
+              )}
+            </LayoutGroup>
+          )}
         </div>
       </div>
       {/* body */}

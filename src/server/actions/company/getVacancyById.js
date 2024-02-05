@@ -88,6 +88,34 @@ export const getVacancyById = async (id) => {
         },
       },
       Bookmarks: true,
+      VacTests: {
+        select: {
+          Test: {
+            select: {
+              id: true,
+              _count: {
+                select: {
+                  questions: true,
+                  VacTests: true,
+                },
+              },
+              Company: true,
+              Area: true,
+              createdAt: true,
+              type: true,
+              questions: {
+                select: {
+                  id: true,
+                  text: true,
+                  answers: {
+                    select: { id: true, text: true, rightAnswer: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
@@ -114,5 +142,6 @@ export const getVacancyById = async (id) => {
     hrcount: currentVacancy?.Company?.HR?.filter((i) => i.dataVerified !== null)
       ?.length,
     followersCount: currentVacancy?.Company?.user?._count?.myCompanyFolowers,
+    VacTests: currentVacancy?.VacTests,
   };
 };

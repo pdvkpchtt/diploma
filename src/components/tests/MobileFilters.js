@@ -1,11 +1,11 @@
 "use client";
 
 import TextMain from "../../shared/Text/TextMain";
-import PeopleFilter from "./PeopleFilter";
 
 import CheckIcon from "../../shared/icons/CheckIcon";
 import ArrowLeftIcon from "../../shared/icons/ArrowLeftIcon";
 import RefreshIcon from "../../shared/icons/RefreshIcon";
+import PeopleFilters from "./PeopleFilters";
 
 const MobileFilters = ({
   dropDataVacancies = {},
@@ -13,13 +13,10 @@ const MobileFilters = ({
   setUpdatePeople = () => {},
 }) => {
   const handleRemoveFilters = async () => {
-    setUpdatePeople({
+    setUpdateVacancies({
       startFiltering: false,
-      distantWork: null,
-      input: "",
-      location: { label: "" },
+      isAi: { label: "Выберите тип" },
       area: [],
-      VacancySkills: [],
     });
   };
 
@@ -80,11 +77,11 @@ const MobileFilters = ({
       <div className="mt-[61px] p-[12px] flex flex-col overflow-y-scroll h-[100vh]">
         <div className="w-full  flex flex-col gap-[16px] h-fit bg-white dark:bg-[#212122] p-[12px] rounded-t-[20px]">
           <TextMain
-            text={`Фильтры для кандидатов`}
+            text={`Фильтры для тестов`}
             style="font-medium text-[16px] leading-[20px] tracking-[-0.015em]"
           />
         </div>
-        <PeopleFilter
+        <PeopleFilters
           dropDataVacancies={dropDataVacancies}
           updatePeople={updatePeople}
           setUpdatePeople={setUpdatePeople}

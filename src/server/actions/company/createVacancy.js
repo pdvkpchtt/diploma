@@ -1,5 +1,6 @@
 import { prisma } from "../../db";
 import { string, z } from "zod";
+import uuid from "react-uuid";
 
 export const createVacancy = async (id, data, role = "company") => {
   // валидация
@@ -73,11 +74,14 @@ export const createVacancy = async (id, data, role = "company") => {
 
   console.log(data, "nefor");
 
+  const vacId = uuid();
+
   const company = await prisma.company.update({
     where: { userId: getHrId?.company?.userId },
     data: {
       Vacancy: {
         create: {
+          id: vacId,
           createdAt: new Date(),
           name: data.name,
           description: data.description,
@@ -121,4 +125,12 @@ export const createVacancy = async (id, data, role = "company") => {
       },
     },
   });
+
+  for (let i = 0; i < data.TestsIds.length; i++)
+    await prisma.VacTests.create({
+      data: {
+        Vacancy: { connect: { id: vacId } },
+        Test: { connect: { id: data.TestsIds[i] } },
+      },
+    });
 };

@@ -25,69 +25,23 @@ import CheckIcon from "../../shared/icons/CheckIcon";
 import ArrowLeftIcon from "../../shared/icons/ArrowLeftIcon";
 import AddCityIcon from "../../shared/icons/AddCityIcon";
 import AddSkillIcon from "../../shared/icons/AddSkillIcon";
+import { fetchTests } from "@/server/actions/company/fetchTests";
+import { LayoutGroup } from "framer-motion";
+import TestCard from "@/shared/ui/TestCard";
+import { Waypoint } from "react-waypoint";
+import TestCard2 from "@/shared/ui/TestCard2";
 
 const maskGenerator = getCurrencyMaskGenerator({
   prefix: "",
   thousandSeparator: " ",
 });
 
-const dummy = [
-  {
-    question: "Какова разница между нефтью и газом?",
-    answers: [
-      {
-        answer: "Нефть - это жидкое топливо, а газ - это газообразное топливо.",
-        rightAnswer: false,
-      },
-      {
-        answer: "Нефть - это газообразное топливо, а газ - это жидкое топливо.",
-        rightAnswer: true,
-      },
-    ],
-  },
-  {
-    question: "Какой тип нефти вырабатывают в России?",
-    answers: [
-      {
-        answer: "В России вырабатывают нефть типа Западной Сибири.",
-        rightAnswer: true,
-      },
-      {
-        answer: "В России вырабатывают нефть типа Восточной Сибири.",
-        rightAnswer: false,
-      },
-    ],
-  },
-  {
-    question: "Какой способ вырабывает нефть из земли?",
-    answers: [
-      {
-        answer: "Нефть вырабатывается из земли с помощью бурения.",
-        rightAnswer: true,
-      },
-      {
-        answer: "Нефть вырабатывается из земли с помощью выщелачивания.",
-        rightAnswer: false,
-      },
-    ],
-  },
-  {
-    question: "Какой продукт вырабатывается в процессе переработки нефти?",
-    answers: [
-      {
-        answer: "В процессе переработки нефти вырабатывается бензин.",
-        rightAnswer: false,
-      },
-      {
-        answer:
-          "В процессе переработки нефти вырабатывается дизельное топливо.",
-        rightAnswer: true,
-      },
-    ],
-  },
-];
-
-const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
+const CreateVacancyRight = ({
+  cdata,
+  dataToUpdate,
+  setDataToUpdate,
+  skills,
+}) => {
   const router = useRouter();
 
   const isMobile = useMediaQuery({ query: "(pointer:coarse)" });
@@ -98,12 +52,16 @@ const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
   // validate
 
   const [littleLoader, setLittleLoader] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [isOpen, toggle] = useState(false);
   const [isOpen2, toggle2] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dropData, setDropData] = useState([]);
   const [state6, setState6] = useState(false);
-  const [state7, setState7] = useState(false);
+  const [users, setUsers] = useState(null);
+  const [cursor, setCursor] = useState("");
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [selectedId, setSelectedId] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -116,6 +74,27 @@ const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const getUsers = async (cursor) => {
+    console.log("fetching");
+    if (loading2) return;
+    setLoading2(true);
+    const data = await fetchTests(cdata.id, cursor);
+    console.log("client tests", data);
+    if (cursor.length) {
+      setUsers([...users, ...data.data]);
+    } else {
+      setUsers(data.data);
+    }
+    setCursor(data.cursor);
+    setHasNextPage(data.hasNextPage);
+    setLoading2(false);
+  };
+
+  useEffect(() => {
+    setCursor("");
+    getUsers("");
+  }, [fetchTests]);
 
   return (
     <div className="w-full flex flex-col [@media(hover)]:ml-[276px] [@media(hover)]:mt-[24px] hideScrollbarNavMobile">
@@ -171,8 +150,8 @@ const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
                   currency: { label: "" },
                   VacancySkills: [],
                   distantWork: false,
-
                   priceByTalk: false,
+                  TestsIds: [],
                 });
                 router.refresh();
                 setLittleLoader(false);
@@ -375,10 +354,7 @@ const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
             {/* вторая сосиска */}
 
             {/* третья сосиска */}
-            <Card
-              padding={12}
-              style={"flex flex-col [@media(hover)]:mb-[24px] gap-[16px] h-fit"}
-            >
+            <Card padding={12} style={"flex flex-col gap-[16px] h-fit"}>
               {/* area */}
               <div className="flex flex-col relative">
                 <TextSecondary
@@ -609,88 +585,6 @@ const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
                   placeholder="Софт-скиллы"
                 />
               </div>
-              {/* <div className="flex flex-col relative gap-[16px]">
-                {dataToUpdate.VacancySkills.length === 0 ? (
-                  <div className="flex flex-col">
-                    <TextSecondary
-                      text={"Скиллы"}
-                      style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em] mb-[6px]"
-                    />
-                    <AddCityIcon
-                      onClick={() => {
-                        if (dataToUpdate.vacArea.length === 0)
-                          toast(`🔍 выберите сферу`, {
-                            position: isMobile ? "top-center" : "bottom-right",
-                            autoClose: 4000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: false,
-                            draggable: true,
-                            progress: undefined,
-                            // theme: "dark",
-                            progressStyle: { background: "#5875e8" },
-                            containerId: "forCopy",
-                          });
-                        else toggle(true);
-                      }}
-                      disabled={dataToUpdate.vacArea.length === 0}
-                    />
-                  </div>
-                ) : (
-                  <>
-                    {dataToUpdate.VacancySkills.filter(
-                      (item) => item.type !== "soft"
-                    ).length > 0 && (
-                      <div className="flex flex-col gap-[8px]">
-                        <TextSecondary
-                          text={"Хард-скиллы"}
-                          style="font-medium text-[14px] leading-[18px] tracking-[-0.013em] whitespace-nowrap"
-                        />
-
-                        <div className="flex flex-row gap-[8px] flex-wrap">
-                          {dataToUpdate.VacancySkills.map(
-                            (item) =>
-                              item.type === "hard" && (
-                                <SkillCard
-                                  noCopy
-                                  onClick={() => toggle(true)}
-                                  text={item.name}
-                                  key={item.id}
-                                />
-                              )
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {dataToUpdate.VacancySkills.filter(
-                      (item) => item.type !== "hard"
-                    ).length > 0 && (
-                      <div className="flex flex-col gap-[8px]">
-                        <TextSecondary
-                          text={"Софт-скиллы"}
-                          style="font-medium text-[14px] leading-[18px] tracking-[-0.013em] whitespace-nowrap"
-                        />
-
-                        <div className="flex flex-row gap-[8px] flex-wrap">
-                          {dataToUpdate.VacancySkills.map(
-                            (item) =>
-                              item.type === "soft" && (
-                                <SkillCard
-                                  noCopy
-                                  onClick={() => toggle(true)}
-                                  soft
-                                  hard={false}
-                                  text={item.name}
-                                  key={item.id}
-                                />
-                              )
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div> */}
               {/* skills */}
 
               {/* salary */}
@@ -807,6 +701,51 @@ const CreateVacancyRight = ({ dataToUpdate, setDataToUpdate, skills }) => {
                 />
               </div>
               {/* prisceByTalk */}
+            </Card>
+
+            <Card
+              padding={12}
+              style={"flex flex-col gap-[16px] h-fit [@media(hover)]:mb-[24px]"}
+            >
+              <LayoutGroup>
+                {!users ? (
+                  <div className="w-full flex justify-center items-center h-full">
+                    <CustomLoader diameter={36} />
+                  </div>
+                ) : users?.length === 0 ? (
+                  <div className="items-center flex flex-col gap-[24px] justify-center w-full text-center ">
+                    <TextMain
+                      text={`У компании пока нет вакансий`}
+                      style="text-[14px] font-medium leading-[18px] tracking-[-0.013em]"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    {users.map((item, key) => (
+                      <TestCard2
+                        dataToUpdate={dataToUpdate}
+                        item={item}
+                        selectedId={selectedId}
+                        setSelectedId={setSelectedId}
+                        setDataToUpdate={setDataToUpdate}
+                      />
+                    ))}
+                    {hasNextPage ? (
+                      <Waypoint
+                        onEnter={async () => {
+                          console.log("Enter waypoint");
+                          await getUsers(cursor);
+                        }}
+                        topOffset="50px"
+                      >
+                        <div className="w-full flex justify-center items-center h-full">
+                          <CustomLoader diameter={36} />
+                        </div>
+                      </Waypoint>
+                    ) : null}
+                  </>
+                )}
+              </LayoutGroup>
             </Card>
           </>
         ) : (

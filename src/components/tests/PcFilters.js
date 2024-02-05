@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 import CheckIcon from "../../shared/icons/CheckIcon";
 import RefreshIcon from "../../shared/icons/RefreshIcon";
+import PeopleFilters from "./PeopleFilters";
 
 const PcFilters = ({
   updatePeople = [],
@@ -17,11 +18,8 @@ const PcFilters = ({
   const handleRemoveFilters = async () => {
     setUpdatePeople({
       startFiltering: false,
-      input: "",
-      peoplecity: { label: "" },
-      educationLevel: { label: "" },
-      workExperience: { label: "" },
-      UserSkills: [],
+      isAi: { label: "Выберите тип" },
+      area: [],
     });
   };
 
@@ -66,12 +64,12 @@ const PcFilters = ({
       {/* body */}
       <div className="w-full max-h-full h-fit rounded-b-[20px]">
         <div className="h-fit bg-white dark:bg-[#212122] rounded-b-[20px] flex flex-col gap-[16px] [@media(pointer:coarse)]:p-[12px]">
-          {/* <PeopleFilters
+          <PeopleFilters
             dropDataVacancies={dropDataVacancies}
             updatePeople={updatePeople}
             skills={dropDataVacancies.userskills}
             setUpdatePeople={setUpdatePeople}
-          /> */}
+          />
         </div>
       </div>
       {/* body */}

@@ -4,8 +4,6 @@ import { getServSession } from "../../../app/api/auth/[...nextauth]/route";
 import { prisma } from "../../db";
 
 export const getPeoples = async (cursor, filters) => {
-  const session = await getServSession();
-  console.log(filters, "osama");
   const users = await prisma.user.findMany({
     take: 11,
     ...(cursor && cursor.length > 0 && { cursor: { id: cursor }, skip: 1 }),

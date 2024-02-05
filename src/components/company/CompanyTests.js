@@ -16,6 +16,7 @@ const CompanyTests = ({ id, others = false, role, userId }) => {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
   const getUsers = async (cursor) => {
     console.log("fetching");
@@ -40,41 +41,45 @@ const CompanyTests = ({ id, others = false, role, userId }) => {
 
   return (
     <>
-      {!users ? (
-        <div className="w-full flex justify-center items-center h-full">
-          <CustomLoader diameter={36} />
-        </div>
-      ) : users?.length === 0 ? (
-        <Card style={"flex justify-center"} padding={16}>
-          <div className="items-center flex flex-col gap-[24px] justify-center w-full text-center ">
-            <TextMain
-              text={`У компании пока нет вакансий`}
-              style="text-[14px] font-medium leading-[18px] tracking-[-0.013em]"
-            />
+      <LayoutGroup>
+        {!users ? (
+          <div className="w-full flex justify-center items-center h-full">
+            <CustomLoader diameter={36} />
           </div>
-        </Card>
-      ) : (
-        <>
-          <LayoutGroup id="comptests">
+        ) : users?.length === 0 ? (
+          <Card style={"flex justify-center"} padding={16}>
+            <div className="items-center flex flex-col gap-[24px] justify-center w-full text-center ">
+              <TextMain
+                text={`У компании пока нет тестов`}
+                style="text-[14px] font-medium leading-[18px] tracking-[-0.013em]"
+              />
+            </div>
+          </Card>
+        ) : (
+          <>
             {users.map((item, key) => (
-              <TestCard item={item} />
+              <TestCard
+                item={item}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+              />
             ))}
-          </LayoutGroup>
-          {hasNextPage ? (
-            <Waypoint
-              onEnter={async () => {
-                console.log("Enter waypoint");
-                await getUsers(cursor);
-              }}
-              topOffset="50px"
-            >
-              <div className="w-full flex justify-center items-center h-full">
-                <CustomLoader diameter={36} />
-              </div>
-            </Waypoint>
-          ) : null}
-        </>
-      )}
+            {hasNextPage ? (
+              <Waypoint
+                onEnter={async () => {
+                  console.log("Enter waypoint");
+                  await getUsers(cursor);
+                }}
+                topOffset="50px"
+              >
+                <div className="w-full flex justify-center items-center h-full">
+                  <CustomLoader diameter={36} />
+                </div>
+              </Waypoint>
+            ) : null}
+          </>
+        )}
+      </LayoutGroup>
     </>
   );
 };

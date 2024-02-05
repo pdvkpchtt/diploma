@@ -8,10 +8,10 @@ const SearchNavContextWrap = ({ children }) => {
   const [scroll, setScroll] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  const [updateVacancies, setUpdateVacancies] = useState({
+  const [updatePeople, setUpdatePeople] = useState({
     startFiltering: false,
-    input: "",
-    isAi: { label: false },
+    isAi: { label: "Не выбрано" },
+    area: [],
   });
 
   return (
@@ -21,8 +21,8 @@ const SearchNavContextWrap = ({ children }) => {
         setScroll,
         showFilters,
         setShowFilters,
-        updateVacancies,
-        setUpdateVacancies,
+        updatePeople,
+        setUpdatePeople,
       }}
     >
       {children}

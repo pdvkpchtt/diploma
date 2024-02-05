@@ -3,11 +3,10 @@
 import { getServSession } from "../../../app/api/auth/[...nextauth]/route";
 import { prisma } from "../../db";
 
-export const getTests = async (id, cursor) => {
+export const getTestsGlobal = async (cursor, filters) => {
   const tests = await prisma.Test.findMany({
     take: 11,
     ...(cursor && cursor.length > 0 && { cursor: { id: cursor }, skip: 1 }),
-    where: { companyId: id },
     select: {
       id: true,
       _count: {
@@ -28,6 +27,33 @@ export const getTests = async (id, cursor) => {
         },
       },
     },
+    where: filters?.startFiltering
+      ? filters.isAi.label === "Не выбрано"
+        ? {
+            Area:
+              filters?.area?.length > 0
+                ? {
+                    label: {
+                      in: filters?.area?.map((item) => true && item.label),
+                    },
+                  }
+                : { label: { contains: "" } },
+          }
+        : {
+            Area:
+              filters?.area?.length > 0
+                ? {
+                    label: {
+                      in: filters?.area?.map((item) => true && item.label),
+                    },
+                  }
+                : { label: { contains: "" } },
+            type:
+              filters.isAi.label == "Создан вручную"
+                ? { contains: "hand" }
+                : { contains: "ai" },
+          }
+      : {},
   });
 
   const hasNextPage = tests.length > 10;

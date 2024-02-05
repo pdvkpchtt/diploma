@@ -22,8 +22,8 @@ const CreateVacancy = ({ data, skills }) => {
     currency: { label: "" },
     VacancySkills: [],
     distantWork: false,
-
     priceByTalk: false,
+    TestsIds: [],
   });
 
   console.log(dataToUpdate, "jopa2");
@@ -32,6 +32,7 @@ const CreateVacancy = ({ data, skills }) => {
     <>
       <CompanyLeft data={data} withoutActions />
       <CreateVacancyRight
+        cdata={data}
         skills={skills}
         dataToUpdate={dataToUpdate}
         setDataToUpdate={setDataToUpdate}

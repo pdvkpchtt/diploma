@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from "react";
 
 import PcFilters from "./PcFilters";
-// import MobileFilters from "./MobileFilters";
+import MobileFilters from "./MobileFilters";
 import MobileModal from "../../shared/ui/MobileModal";
 import { SearchNavContext } from "./SearchNavContextWrap";
 import CustomLoader from "../../shared/ui/CustomLoader";
@@ -45,7 +45,7 @@ const FiltersWrap = () => {
           {/* filters */}
 
           {/* filters mobile */}
-          {/* <MobileModal
+          <MobileModal
             isOpen={showFilters}
             handleClose={setShowFilters}
             withOutScroll
@@ -57,7 +57,7 @@ const FiltersWrap = () => {
               setUpdatePeople={setUpdatePeople}
               setShowFilters={(value) => setShowFilters(value)}
             />
-          </MobileModal> */}
+          </MobileModal>
           {/* filters mobile */}
         </>
       )}
