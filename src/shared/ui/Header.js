@@ -8,6 +8,7 @@ import CandidatesIcon from "../icons/CandidatesIcon";
 // import SearchIcon from "../icons/SearchIcon";
 // import MessengerIcon from "../icons/MessengerIcon";
 import DemoIcon from "../icons/DemoIcon";
+import HRsIcon from "../icons/HRsIcon";
 import JobIcon from "../icons/JobIcon";
 import ProfileIcon from "../icons/ProfileIcon";
 import TestIcon from "../icons/TestIcon";
@@ -35,7 +36,7 @@ const Header = ({ role }) => {
             <SearchIcon />
             <MessengerIcon /> */}
             <JobIcon />
-            <CandidatesIcon />
+            {role === "student" ? <HRsIcon /> : <CandidatesIcon />}
             <TestIcon />
             <ProfileIcon role={role} />
           </div>
