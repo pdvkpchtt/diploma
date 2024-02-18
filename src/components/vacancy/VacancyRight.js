@@ -6,7 +6,7 @@ import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-import { OneIconButton } from "../../shared/ui/Button";
+import { ButtonPrimary, OneIconButton } from "../../shared/ui/Button";
 import SkillCard from "../../shared/ui/SkillCard";
 import TextSecondary from "../../shared/Text/TextSecondary";
 import TextMain from "../../shared/Text/TextMain";
@@ -229,10 +229,22 @@ const VacancyRight = ({ data, role = "student", userId }) => {
             </LayoutGroup>
           )}
 
-          {data?.amICreator === true && <>Создать созвон</>}
+          {data?.amICreator === true && (
+            <ButtonPrimary
+              text="Создать собеседование"
+              style="w-full"
+              onClick={() =>
+                router.push(
+                  `/call?vac=${data.name}&comp=${data.Company.id}&vacId=${data.id}`
+                )
+              }
+            />
+          )}
         </div>
       </div>
       {/* body */}
+
+      <div className={`[@media(hover)]:pb-[24px]`} />
     </div>
   );
 };

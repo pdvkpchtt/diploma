@@ -1,11 +1,11 @@
 "use server";
 
 import { getServSession } from "../../../app/api/auth/[...nextauth]/route";
-import { getUsersBookmarks } from "./getUsersBookmarks";
+import { getEndedMeetings } from "./getEndedMeetings";
 
-export async function fetchBookmarks(cursor) {
+export async function fetchBookmarks(status) {
   const session = await getServSession();
 
-  const data = await getUsersBookmarks(session.user.id, cursor);
+  const data = await getEndedMeetings(session.user.id, status);
   return data;
 }

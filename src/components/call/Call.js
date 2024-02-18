@@ -4,20 +4,8 @@ import { useRef } from "react";
 import { useEffect, useState } from "react";
 
 import useWebRTC, { LOCAL_VIDEO } from "@/hooks/useWebRTC";
-
-const buttons = [
-  [
-    {
-      text: "Mute",
-      icon: "fa fa-microphone",
-    },
-    {
-      text: "Pause Video",
-      icon: "fa fa-video-camera",
-    },
-  ],
-  [{ text: "Leave Meeting", icon: "fa fa-sign-out", leave: true }],
-];
+import { useRouter } from "next/navigation";
+import { endCall } from "@/server/actions/call/endCall";
 
 function layout(clientsNumber = 1) {
   const pairs = Array.from({ length: clientsNumber }).reduce(
@@ -53,7 +41,39 @@ function layout(clientsNumber = 1) {
     .flat();
 }
 
-const Call = ({ roomID }) => {
+const Call = ({ roomID, role, data }) => {
+  const router = useRouter();
+
+  console.log(data);
+
+  const buttons = [
+    [
+      {
+        text: "Mute",
+        icon: "fa fa-microphone",
+        onClick: () => {},
+      },
+      {
+        text: "Pause Video",
+        icon: "fa fa-video-camera",
+        onClick: () => {},
+      },
+    ],
+    [
+      {
+        text: "Leave Meeting",
+        icon: "fa fa-sign-out",
+        leave: true,
+        onClick: async () => {
+          if (role?.includes("hr")) {
+            await endCall(roomID);
+            router.push("/profile");
+          } else router.push("/profile");
+        },
+      },
+    ],
+  ];
+
   const { clients, provideMediaRef } = useWebRTC(roomID);
   const videoLayout = layout(clients.length);
 
@@ -103,7 +123,7 @@ const Call = ({ roomID }) => {
                       ? "bg-[#F04646] hover:bg-[#C92121] active:bg-[#8a3838] text-white"
                       : "hover:bg-[#141414] hover:bg-opacity-70 active:bg-[#141414]"
                   } cursor-pointer p-[10px] h-[60px] justify-center items-center min-w-[80px] transition-all duration-[300ms] rounded-[10px] m-[5px]`}
-                  // onclick="muteUnmute()"
+                  onClick={i.onClick}
                 >
                   <i className={i.icon} style={{ fontSize: 25 }}></i>
                 </div>

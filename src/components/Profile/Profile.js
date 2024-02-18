@@ -7,6 +7,8 @@ import Left from "./Left";
 import Right from "./Right";
 import ProfileInfo from "./ProfileInfo";
 import ProfileBookmarks from "../../components/Profile/ProfileBookmarks";
+import ProfileCalls from "./ProfileCalls";
+import ProfileBookmarks2 from "./ProfileBookmarks2";
 
 const Profile = ({ data, userId }) => {
   console.log("client profile", data);
@@ -17,7 +19,9 @@ const Profile = ({ data, userId }) => {
             id: 0,
             active: true,
             name: "История собеседований",
-            component: <ProfileBookmarks userId={userId} others />,
+            component: (
+              <ProfileBookmarks2 userId={userId} others role={data?.role} />
+            ),
           },
         ]
       : [
@@ -30,8 +34,14 @@ const Profile = ({ data, userId }) => {
           {
             id: 1,
             active: false,
+            name: "Собеседования",
+            component: <ProfileCalls />,
+          },
+          {
+            id: 2,
+            active: false,
             name: "История собеседований",
-            component: <ProfileBookmarks userId={userId} />,
+            component: <ProfileBookmarks userId={userId} role={data?.role} />,
           },
         ]
   );

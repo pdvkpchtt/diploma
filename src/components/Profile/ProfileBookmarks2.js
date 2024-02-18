@@ -10,7 +10,7 @@ import TextMain from "../../shared/Text/TextMain";
 import Card from "../../shared/ui/Card";
 import CustomLoader from "../../shared/ui/CustomLoader";
 
-const ProfileBookmarks = ({ userId, others, role }) => {
+const ProfileBookmarks2 = ({ userId, others, role }) => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(null);
 
@@ -18,7 +18,7 @@ const ProfileBookmarks = ({ userId, others, role }) => {
     console.log("fetching");
     if (loading) return;
     setLoading(true);
-    const data = await fetchBookmarks();
+    const data = await fetchBookmarks(true);
     console.log("client bookmarks", data.data);
     setPosts(data.data);
     setLoading(false);
@@ -59,4 +59,4 @@ const ProfileBookmarks = ({ userId, others, role }) => {
   );
 };
 
-export default ProfileBookmarks;
+export default ProfileBookmarks2;

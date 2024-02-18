@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import TextMain from "@/shared/Text/TextMain";
 import Card from "@/shared/ui/Card";
@@ -14,33 +14,29 @@ import AddCityIcon from "@/shared/icons/AddCityIcon";
 import DropDownWithChoise from "@/shared/ui/DropDownWithChoise";
 import DropDownWithSearch from "@/shared/ui/DropDownWithSearch";
 
-import { v4 } from "uuidv4";
-
-import socket from "@/socket";
-import ACTIONS from "@/socket/actions";
+import { v4 as uuidv4 } from "uuid";
+import { createMeeting } from "@/server/actions/call/createMeeting";
 
 const CreateCall = ({ users }) => {
-  const [rooms, updateRooms] = useState([]);
-  const rootNode = useRef();
-
-  useEffect(() => {
-    socket.on(ACTIONS.SHARE_ROOMS, ({ rooms = [] } = {}) => {
-      updateRooms(rooms);
-      console.log(rooms, "asasas");
-    });
-  }, []);
-
   const usersNew = users?.map((i) => true && { id: i.id, label: i.name });
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const email = searchParams.get("email");
+  const vacName = searchParams.get("vac");
+  const compId = searchParams.get("comp");
+  const vacId = searchParams.get("vacId");
 
   const [state, setState] = useState({
-    name: "",
+    name: vacName ? vacName : "",
     user: { label: "" },
   });
   const [state6, setState6] = useState(false);
+
+  const handleSubmit = async () => {
+    const linkId = uuidv4();
+    await createMeeting(state, linkId, compId, vacId);
+    router.push(`/call/${linkId}`);
+  };
 
   return (
     <div className="flex justify-center h-full w-full items-center max-w-[500px] mx-auto">
@@ -94,10 +90,15 @@ const CreateCall = ({ users }) => {
               ? "opacity-50 cursor-default"
               : "cursor-pointer hover:bg-[#3A56C5] active:bg-[#2C429C]"
           } w-full mt-[12px] font-medium outline-none [@media(pointer:coarse)]:rounded-[20px] transition duration-[250ms] rounded-[16px] h-[43px] bg-[#5875e8] leading-[20px] text-[16px] tracking-[-0.015em] text-center select-none text-white items-center flex justify-center `}
-          onClick={() => {}}
+          onClick={() => handleSubmit()}
         >
           Начать собеседование
         </button>
+
+        <TextSecondary
+          text="Ссылка на собеседование будет отправлена соискателю"
+          style={"font-medium text-[12px]"}
+        />
       </Card>
     </div>
   );

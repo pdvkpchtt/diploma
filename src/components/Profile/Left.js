@@ -41,7 +41,13 @@ const Left = ({ navState, data }) => {
         padding={12}
       >
         <div className="rounded-[8px] relative overflow-hidden aspect-square [@media(pointer:coarse)]:w-full [@media(pointer:coarse)]:h-full [@media(hover)]:min-w-[236px] [@media(hover)]:min-h-[236px]  [@media(hover)]:w-[236px] [@media(hover)]:h-[236px]">
-          <p className="absolute bg-[#74899B] bg-opacity-[8%] text-[13px] select-none text-[#5875e8] font-medium px-[8px] py-[4px] bottom-0 left-0 rounded-tr-[8px]">
+          <p
+            className={`absolute ${
+              data.image
+                ? "bg-[#141414] bg-opacity-[90%]"
+                : "bg-[#74899B] bg-opacity-[8%]"
+            } text-[13px] select-none text-[#5875e8] font-medium px-[8px] py-[4px] bottom-0 left-0 rounded-tr-[8px]`}
+          >
             {data.role === "student" ? "Соискатель" : "HR"}
           </p>
           {data.image ? (

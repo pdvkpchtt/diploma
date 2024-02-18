@@ -142,6 +142,7 @@ model CompanyIndustry {
 
 model Meeting {
   id        String    @id @default(cuid())
+  name      String
   createdAt DateTime  @default(now())
   endedAt   DateTime?
   creatorId String
@@ -150,6 +151,7 @@ model Meeting {
   student   User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
   vacancyId String
   Vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  hrCreator String
 }
 
 model Vacancy {

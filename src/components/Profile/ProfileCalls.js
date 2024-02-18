@@ -1,16 +1,15 @@
 "use client";
 
-import EndedMeetingCard from "@/shared/ui/EndedMeetingCard";
+import { fetchMeetings } from "@/server/actions/call/fetchMeetings";
+import MeetingCard from "@/shared/ui/MeetingCard";
 import { useEffect, useState } from "react";
 import { Waypoint } from "react-waypoint";
 
-import { fetchBookmarks } from "../../server/actions/bookmarks/fetchBookmarks";
-// import VacancyCard from "../../shared/ui/VacancyCard";
 import TextMain from "../../shared/Text/TextMain";
 import Card from "../../shared/ui/Card";
 import CustomLoader from "../../shared/ui/CustomLoader";
 
-const ProfileBookmarks = ({ userId, others, role }) => {
+const ProfileCalls = ({ userId, others }) => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(null);
 
@@ -18,7 +17,7 @@ const ProfileBookmarks = ({ userId, others, role }) => {
     console.log("fetching");
     if (loading) return;
     setLoading(true);
-    const data = await fetchBookmarks();
+    const data = await fetchMeetings();
     console.log("client bookmarks", data.data);
     setPosts(data.data);
     setLoading(false);
@@ -26,7 +25,7 @@ const ProfileBookmarks = ({ userId, others, role }) => {
 
   useEffect(() => {
     getPosts("");
-  }, [fetchBookmarks]);
+  }, [fetchMeetings]);
 
   return (
     <>
@@ -38,11 +37,7 @@ const ProfileBookmarks = ({ userId, others, role }) => {
         <Card style={"flex justify-center"} padding={16}>
           <div className="items-center flex flex-col gap-[24px] justify-center w-full text-center ">
             <TextMain
-              text={
-                !others
-                  ? `Вы пока не прошли ни одного собеседования`
-                  : "Вы пока не провели ни одного собеседования"
-              }
+              text={"У вас пока нет приглашений на собеседования"}
               style="text-[14px] font-medium leading-[18px] tracking-[-0.013em]"
             />
           </div>
@@ -50,8 +45,7 @@ const ProfileBookmarks = ({ userId, others, role }) => {
       ) : (
         <>
           {posts.map((item) => (
-            // <VacancyCard key={item.id} item={item.vacancy} userId={userId} />
-            <EndedMeetingCard item={item} role={role} />
+            <MeetingCard item={item} />
           ))}
         </>
       )}
@@ -59,4 +53,4 @@ const ProfileBookmarks = ({ userId, others, role }) => {
   );
 };
 
-export default ProfileBookmarks;
+export default ProfileCalls;

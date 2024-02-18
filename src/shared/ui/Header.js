@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import CallsIcon from "../icons/CallsIcon";
 import CandidatesIcon from "../icons/CandidatesIcon";
 
 // import HomeIcon from "../icons/HomeIcon";
@@ -20,7 +21,7 @@ const Header = ({ role }) => {
   const isHideHeader =
     pathname.includes("/auth") ||
     pathname === "/landing" ||
-    pathname.includes("/call");
+    pathname.includes("/call/");
 
   if (!isHideHeader)
     return (
@@ -40,7 +41,7 @@ const Header = ({ role }) => {
             <MessengerIcon /> */}
             <JobIcon />
             {role === "student" ? <HRsIcon /> : <CandidatesIcon />}
-            <TestIcon />
+            {role === "student" ? null : <TestIcon />}
             <ProfileIcon role={role} />
           </div>
 
