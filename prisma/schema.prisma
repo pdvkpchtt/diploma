@@ -72,9 +72,12 @@ model User {
   BookMarks  Bookmarks[]
   Company    Company?
   HR         Hr[]
-  
+  Meeting    Meeting[]
+
   planId String?
   plan   Plan?   @relation(fields: [planId], references: [id])
+
+  peerId String?
 }
 
 model Plan {
@@ -128,12 +131,25 @@ model Company {
   industry   CompanyIndustry? @relation(fields: [industryId], references: [id])
   HR         Hr[]
   Test       Test[]
+  Meeting    Meeting[]
 }
 
 model CompanyIndustry {
   id      String    @id @default(cuid())
   label   String
   Company Company[]
+}
+
+model Meeting {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  endedAt   DateTime?
+  creatorId String
+  creator   Company      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  studentId String
+  student   User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  vacancyId String
+  Vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
 }
 
 model Vacancy {
@@ -178,6 +194,7 @@ model Vacancy {
   hrCreator     Hr?             @relation(fields: [hrCreatorId], references: [id])
   VacancySkills VacancySkills[]
   vacArea       VacArea[]
+  Meeting       Meeting[]
   VacTests      VacTests[]
   createdAt     DateTime        @default(now())
 }

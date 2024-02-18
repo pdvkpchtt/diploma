@@ -30,7 +30,7 @@ const Profile = ({ data, userId }) => {
           {
             id: 1,
             active: false,
-            name: "История откликов",
+            name: "История собеседований",
             component: <ProfileBookmarks userId={userId} />,
           },
         ]

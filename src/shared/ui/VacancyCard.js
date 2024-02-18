@@ -96,7 +96,7 @@ const VacancyCard = ({ item, role = "student", userId }) => {
                   ) : (
                     <p className="font-medium text-[14px] leading-[18px] tracking-[-0.013em] break-words text-[#8f8f8f]">
                       По договоренности
-                      {item.Location.length > 0 && <> • </>}
+                      {item?.Location?.length > 0 && <> • </>}
                     </p>
                   )}
 

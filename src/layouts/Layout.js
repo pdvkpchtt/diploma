@@ -1,22 +1,27 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-// import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Layout = ({ children }) => {
-  // const pathname = usePathname();
+  const pathname = usePathname();
+
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <div
-        className={`
+        className={
+          !pathname?.includes("call/")
+            ? `
         h-full
         flex flex-col justify-start
         max-w-[1012px] [@media(hover)]:min-w-[1012px] [@media(pointer:coarse)]:max-w-[500px] mx-auto 
         px-[16px] [@media(pointer:coarse)]:px-[12px]
         items-start [@media(pointer:coarse)]:items-center            
-       `}
+       `
+            : "w-[100vw] h-[100vh]"
+        }
       >
         {children}
       </div>

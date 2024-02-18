@@ -22,6 +22,10 @@ export default async function RootLayout({ children }) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
+        <link
+          rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
       </head>
       <body className="bg-[#f6f6f8] dark:bg-[#141414] hideScrollbarNav h-[100vh]">
         <SessionProvider session={session}>

@@ -228,6 +228,8 @@ const VacancyRight = ({ data, role = "student", userId }) => {
               )}
             </LayoutGroup>
           )}
+
+          {data?.amICreator === true && <>Создать созвон</>}
         </div>
       </div>
       {/* body */}
