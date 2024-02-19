@@ -64,7 +64,7 @@ const FullTestModal = ({ item, setClose = () => {}, selectedId }) => {
                     router.push(`/companyproflie/${item.Company.username}`)
                   }
                 >
-                  {item.image ? (
+                  {item.Company.image ? (
                     <Image
                       src={item.Company.image}
                       alt="Profile image"

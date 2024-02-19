@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { useEffect, useState } from "react";
+import * as faceapi from "face-api.js";
 
 import useWebRTC, { LOCAL_VIDEO } from "@/hooks/useWebRTC";
 import { useRouter } from "next/navigation";
@@ -44,7 +45,67 @@ function layout(clientsNumber = 1) {
 const Call = ({ roomID, role, data }) => {
   const router = useRouter();
 
-  console.log(data);
+  const canvasRef = useRef();
+  const videoRef = useRef();
+
+  const [ai, setAi] = useState(false);
+
+  const faceMyDetect = () => {
+    try {
+      setInterval(async () => {
+        // if (ai) {
+        const detections = await faceapi
+          .detectAllFaces(
+            videoRef.current,
+            new faceapi.TinyFaceDetectorOptions()
+          )
+          .withFaceLandmarks()
+          .withFaceExpressions();
+
+        canvasRef.current.innerHtml = faceapi.createCanvasFromMedia(
+          videoRef.current
+        );
+        faceapi.matchDimensions(canvasRef.current, {
+          width: 940,
+          height: 650,
+        });
+
+        const resized = faceapi.resizeResults(detections, {
+          width: 940,
+          height: 650,
+        });
+
+        faceapi.draw.drawDetections(canvasRef.current, resized);
+        //   faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
+        faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
+
+        // if (detections.length > 0) {
+        //   setangry(angry + detections[0]?.expressions?.angry);
+        //   setdisgusted(disgusted + detections[0]?.expressions?.disgusted);
+        //   setfearful(fearful + detections[0]?.expressions?.fearful);
+        //   sethappy(happy + detections[0]?.expressions?.happy);
+        //   setneutral(neutral + detections[0]?.expressions?.neutral);
+        //   setsad(sad + detections[0]?.expressions?.sad);
+        //   setsurprised(surprised + detections[0]?.expressions?.surprised);
+        //   console.log(detections[0]?.expressions);
+        // }
+        // }
+      }, 1000);
+    } catch (err) {
+      console.log("");
+    }
+  };
+
+  const loadModels = () => {
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    ]).then(() => {
+      faceMyDetect();
+    });
+  };
 
   const buttons = [
     [
@@ -57,6 +118,11 @@ const Call = ({ roomID, role, data }) => {
         text: "Pause Video",
         icon: "fa fa-video-camera",
         onClick: () => {},
+      },
+      {
+        text: "Pause Video",
+        icon: !ai ? "fa fa-toggle-off" : "fa fa-toggle-on",
+        onClick: () => test(),
       },
     ],
     [
@@ -74,8 +140,23 @@ const Call = ({ roomID, role, data }) => {
     ],
   ];
 
-  const { clients, provideMediaRef } = useWebRTC(roomID);
+  const { clients, provideMediaRef, peerMediaElements } = useWebRTC(roomID);
   const videoLayout = layout(clients.length);
+  console.log(peerMediaElements.current);
+
+  // супер костыль
+  const test = () => {
+    if (role.includes("hr")) {
+      setAi(!ai);
+      console.log(peerMediaElements.current);
+      clients.map((i) => {
+        if (i !== "LOCAL_VIDEO")
+          videoRef.current = peerMediaElements.current[i];
+        console.log(peerMediaElements.current[i]);
+      });
+      loadModels();
+    }
+  };
 
   return (
     <div className="flex max-h-screen max-w-screen h-screen w-full">
@@ -89,8 +170,16 @@ const Call = ({ roomID, role, data }) => {
                   key={clientID}
                   style={videoLayout[index]}
                   id={clientID}
-                  className={`flex items-center bg-black`}
+                  className={`flex items-center bg-black relative`}
                 >
+                  {role.includes("hr") && ai && clientID !== "LOCAL_VIDEO" && (
+                    <canvas
+                      ref={canvasRef}
+                      width="100%"
+                      height="100%"
+                      className="absolute top-0 left-0 z-[500] w-full h-full"
+                    />
+                  )}
                   <video
                     width="100%"
                     height="100%"
@@ -122,7 +211,11 @@ const Call = ({ roomID, role, data }) => {
                     i?.leave
                       ? "bg-[#F04646] hover:bg-[#C92121] active:bg-[#8a3838] text-white"
                       : "hover:bg-[#141414] hover:bg-opacity-70 active:bg-[#141414]"
-                  } cursor-pointer p-[10px] h-[60px] justify-center items-center min-w-[80px] transition-all duration-[300ms] rounded-[10px] m-[5px]`}
+                  } cursor-pointer ${
+                    i.icon.includes("fa fa-toggle-") &&
+                    !role.includes("hr") &&
+                    "hidden"
+                  } p-[10px] h-[60px] justify-center items-center min-w-[80px] transition-all duration-[300ms] rounded-[10px] m-[5px]`}
                   onClick={i.onClick}
                 >
                   <i className={i.icon} style={{ fontSize: 25 }}></i>
