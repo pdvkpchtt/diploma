@@ -171,14 +171,14 @@ const Call = ({ roomID, role, data }) => {
                   id={clientID}
                   className={`flex items-center bg-black relative`}
                 >
-                  {/* {role.includes("hr") && ai && clientID !== "LOCAL_VIDEO" && (
+                  {role.includes("hr") && ai && clientID !== "LOCAL_VIDEO" && (
                     <canvas
                       ref={canvasRef}
                       width="100%"
                       height="100%"
                       className="absolute top-[100px] left-0 z-[500] w-full h-fit"
                     />
-                  )} */}
+                  )}
                   <video
                     width="100%"
                     height="100%"

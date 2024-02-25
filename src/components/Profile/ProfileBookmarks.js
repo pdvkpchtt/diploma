@@ -55,6 +55,7 @@ const ProfileBookmarks = ({ userId, others, role }) => {
           ))}
         </>
       )}
+      <div className="[@media(hover)]:h-[24px]" />
     </>
   );
 };

@@ -152,6 +152,17 @@ model Meeting {
   vacancyId String
   Vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
   hrCreator String
+  Message   Message[]
+}
+
+model Message {
+  id        String    @id @default(cuid())
+  text      String?
+  type      String
+  meetingId String
+  Meeting   Meeting   @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  testId    String
+  Test      Test      @relation(fields: [testId], references: [id], onDelete: Cascade)
 }
 
 model Vacancy {
@@ -220,6 +231,7 @@ model Test {
   Area      Area            @relation(fields: [areaId], references: [id], onDelete: Cascade)
   createdAt DateTime        @default(now())
   type      String          @default("hand")
+  Message   Message[]
 }
 
 model Question {
