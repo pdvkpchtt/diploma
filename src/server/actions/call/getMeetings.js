@@ -46,6 +46,9 @@ export const getMeetings = async (id) => {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return {

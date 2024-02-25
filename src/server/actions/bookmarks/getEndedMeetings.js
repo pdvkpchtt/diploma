@@ -48,6 +48,9 @@ export const getEndedMeetings = async (id, status) => {
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return {

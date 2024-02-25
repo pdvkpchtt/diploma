@@ -53,7 +53,6 @@ const Call = ({ roomID, role, data }) => {
   const faceMyDetect = () => {
     try {
       setInterval(async () => {
-        // if (ai) {
         const detections = await faceapi
           .detectAllFaces(
             videoRef.current,
@@ -89,8 +88,8 @@ const Call = ({ roomID, role, data }) => {
         //   setsurprised(surprised + detections[0]?.expressions?.surprised);
         //   console.log(detections[0]?.expressions);
         // }
-        // }
-      }, 1000);
+        console.log("sda");
+      }, 1500);
     } catch (err) {
       console.log("");
     }
@@ -172,14 +171,14 @@ const Call = ({ roomID, role, data }) => {
                   id={clientID}
                   className={`flex items-center bg-black relative`}
                 >
-                  {role.includes("hr") && ai && clientID !== "LOCAL_VIDEO" && (
+                  {/* {role.includes("hr") && ai && clientID !== "LOCAL_VIDEO" && (
                     <canvas
                       ref={canvasRef}
                       width="100%"
                       height="100%"
-                      className="absolute top-0 left-0 z-[500] w-full h-full"
+                      className="absolute top-[100px] left-0 z-[500] w-full h-fit"
                     />
-                  )}
+                  )} */}
                   <video
                     width="100%"
                     height="100%"
@@ -189,6 +188,7 @@ const Call = ({ roomID, role, data }) => {
                     autoPlay
                     playsInline
                     muted={clientID === "LOCAL_VIDEO"}
+                    className="scale-x-[-1]"
                     // className={`${
                     //   clientID === "LOCAL_VIDEO" && "border-[1px] border-[red]"
                     // }`}
