@@ -9,6 +9,7 @@ const { version, validate } = require("uuid");
 const pool = require("./pool");
 const ACTIONS = require("./src/socket/actions");
 const { uuid } = require("uuidv4");
+const { sendMessage } = require("./src/server/actions/call/sendMessage");
 
 const PORT = 3001;
 
@@ -31,16 +32,17 @@ io.on("connection", (socket) => {
 
   socket.on("send", async () => {
     console.log("send");
-    const post = await pool.query(
-      `INSERT INTO public."Message"(id, text, type, "meetingId", "testId") values($1,$2,$3,$4,$5)`,
-      [
-        uuid(),
-        "test",
-        "test",
-        "15c71fd7-2a64-43bf-a1d2-7ea4be33ccc6",
-        "clrxsd0bg0015vi7ob6ofc7tz",
-      ]
-    );
+    // const post = await pool.query(
+    //   `INSERT INTO public."Message"(id, text, type, "meetingId", "testId") values($1,$2,$3,$4,$5)`,
+    //   [
+    //     uuid(),
+    //     "test",
+    //     "test",
+    //     "15c71fd7-2a64-43bf-a1d2-7ea4be33ccc6",
+    //     "clrxsd0bg0015vi7ob6ofc7tz",
+    //   ]
+    // );
+    sendMessage();
   });
 
   socket.on(ACTIONS.JOIN, (config) => {

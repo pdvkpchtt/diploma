@@ -1,10 +1,9 @@
 "use server";
 
-import { getServSession } from "../../../app/api/auth/[...nextauth]/route";
-import { prisma } from "../../db";
+const { prisma } = require("../../db");
 
-export const sendMessage = async () => {
-  const session = await getServSession();
+const sendMessage = async () => {
+  // const session = await getServSession();
 
   const message = await prisma.Message.create({
     data: {
@@ -15,3 +14,5 @@ export const sendMessage = async () => {
     },
   });
 };
+
+module.exports = { sendMessage };
