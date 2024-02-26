@@ -197,9 +197,14 @@ export default function useWebRTC(roomID) {
     peerMediaElements.current[id] = node;
   }, []);
 
+  const testSend = () => {
+    socket.emit("send");
+  };
+
   return {
     clients,
     provideMediaRef,
     peerMediaElements,
+    testSend,
   };
 }

@@ -139,7 +139,8 @@ const Call = ({ roomID, role, data }) => {
     ],
   ];
 
-  const { clients, provideMediaRef, peerMediaElements } = useWebRTC(roomID);
+  const { clients, provideMediaRef, peerMediaElements, testSend } =
+    useWebRTC(roomID);
   const videoLayout = layout(clients.length);
   console.log(peerMediaElements.current);
 
@@ -244,10 +245,11 @@ const Call = ({ roomID, role, data }) => {
           ))}
         </div>
 
-        <input
-          type="text"
-          placeholder="Type message here.."
-          className="outline-none bg-transparent border-t-[1px] border-t-[#181818] text-[#f6f6f8] placeholder:text-[#8f8f8f] p-[10px]"
+        <div
+          // type="text"
+          onClick={() => testSend()}
+          // placeholder="Type message here.."
+          className="outline-none bg-[red] h-[50px] border-t-[1px] border-t-[#181818] text-[#f6f6f8] placeholder:text-[#8f8f8f] p-[10px]"
         />
       </div>
       {/* right */}
