@@ -78,21 +78,19 @@ const Call = ({ roomID, role, data }) => {
         //   faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
         faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
 
-        // if (detections.length > 0) {
-        //   setangry(angry + detections[0]?.expressions?.angry);
-        //   setdisgusted(disgusted + detections[0]?.expressions?.disgusted);
-        //   setfearful(fearful + detections[0]?.expressions?.fearful);
-        //   sethappy(happy + detections[0]?.expressions?.happy);
-        //   setneutral(neutral + detections[0]?.expressions?.neutral);
-        //   setsad(sad + detections[0]?.expressions?.sad);
-        //   setsurprised(surprised + detections[0]?.expressions?.surprised);
-        //   console.log(detections[0]?.expressions);
-        // }
+        if (detections.length > 0) {
+          // setangry(angry + detections[0]?.expressions?.angry);
+          // setdisgusted(disgusted + detections[0]?.expressions?.disgusted);
+          // setfearful(fearful + detections[0]?.expressions?.fearful);
+          // sethappy(happy + detections[0]?.expressions?.happy);
+          // setneutral(neutral + detections[0]?.expressions?.neutral);
+          // setsad(sad + detections[0]?.expressions?.sad);
+          // setsurprised(surprised + detections[0]?.expressions?.surprised);
+          console.log(detections[0]?.expressions);
+        }
         console.log("sda");
       }, 1500);
-    } catch (err) {
-      console.log("");
-    }
+    } catch (err) {}
   };
 
   const loadModels = () => {
@@ -142,17 +140,14 @@ const Call = ({ roomID, role, data }) => {
   const { clients, provideMediaRef, peerMediaElements, testSend } =
     useWebRTC(roomID);
   const videoLayout = layout(clients.length);
-  console.log(peerMediaElements.current);
 
   // супер костыль
   const test = () => {
     if (role.includes("hr")) {
       setAi(!ai);
-      console.log(peerMediaElements.current);
       clients.map((i) => {
         if (i !== "LOCAL_VIDEO")
           videoRef.current = peerMediaElements.current[i];
-        console.log(peerMediaElements.current[i]);
       });
       loadModels();
     }
