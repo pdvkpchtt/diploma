@@ -9,7 +9,14 @@ const CallIdPage = async ({ params: { id } }) => {
 
   const data = await getExactCall(id);
 
-  return <Call roomID={id} role={session?.user?.role} data={data} />;
+  return (
+    <Call
+      roomID={id}
+      role={session?.user?.role}
+      id={session?.user?.id}
+      data={data}
+    />
+  );
 };
 
 export default CallIdPage;

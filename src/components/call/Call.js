@@ -7,6 +7,8 @@ import * as faceapi from "face-api.js";
 import useWebRTC, { LOCAL_VIDEO } from "@/hooks/useWebRTC";
 import { useRouter } from "next/navigation";
 import { endCall } from "@/server/actions/call/endCall";
+import { SendIcon } from "@/shared/icons/SendIcon";
+import socket from "@/socket";
 
 function layout(clientsNumber = 1) {
   const pairs = Array.from({ length: clientsNumber }).reduce(
@@ -42,7 +44,7 @@ function layout(clientsNumber = 1) {
     .flat();
 }
 
-const Call = ({ roomID, role, data }) => {
+const Call = ({ roomID, role, data, id }) => {
   const router = useRouter();
 
   const canvasRef = useRef();
@@ -153,6 +155,12 @@ const Call = ({ roomID, role, data }) => {
     }
   };
 
+  socket.on("eventSend", function (msg) {
+    console.log(msg, "asss");
+    // if (!msg?.status) setMsgList([...msgList, msg]);
+    // else setError(msg);
+  });
+
   return (
     <div className="flex max-h-screen max-w-screen h-screen w-full">
       <div className="flex-[0.8] flex flex-col">
@@ -229,7 +237,7 @@ const Call = ({ roomID, role, data }) => {
           <h6>Chat</h6>
         </div>
 
-        <div className="overflow-y-auto flex-grow flex-col-reverse gap-[5px] flex p-[20px]">
+        <div className="overflow-y-auto flex-grow h-[calc(100vh-73px)] flex-col-reverse gap-[5px] flex p-[20px]">
           {[...Array(50)].map((i, key) => (
             <p
               key={key}
@@ -240,14 +248,27 @@ const Call = ({ roomID, role, data }) => {
           ))}
         </div>
 
-        <div
-          // type="text"
-          onClick={() => testSend()}
-          // placeholder="Type message here.."
-          className="outline-none bg-[red] h-[50px] border-t-[1px] border-t-[#181818] text-[#f6f6f8] placeholder:text-[#8f8f8f] p-[10px]"
-        />
+        <form
+          id={"clear"}
+          action={(e) => {
+            socket.emit("send", {
+              message: e.get("msg")?.toString(),
+              roomID: roomID,
+              userId: id,
+            });
+            document.getElementById("clear").reset();
+          }}
+          className="border-t-[2px] mx-[10px] border-[#8f8f8f] flex flex-row items-center "
+        >
+          <input
+            name={"msg"}
+            placeholder={"Введите сообщение..."}
+            className="px-[12px] bg-transparent w-full h-[42px] text-[#2c2c2c] dark:text-white dark:placeholder:text-[#8f8f8f] text-[14px] pb-[12px] pt-[11px] transition duration-[250ms] hover:inner-border-[1px] outline-none placeholder:font-normal placeholder:text-[#bfbfbf] leading-[18px] tracking-[-0.015em] placeholder:leading-[18px] placeholder:tracking-[-0.015em]"
+          />
+          <SendIcon />
+        </form>
+        {/* right */}
       </div>
-      {/* right */}
     </div>
   );
 };

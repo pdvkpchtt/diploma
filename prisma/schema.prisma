@@ -161,8 +161,9 @@ model Message {
   type      String
   meetingId String
   Meeting   Meeting   @relation(fields: [meetingId], references: [id], onDelete: Cascade)
-  testId    String
-  Test      Test      @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId    String?
+  Test      Test?      @relation(fields: [testId], references: [id], onDelete: Cascade)
+  author    String?
 }
 
 model Vacancy {

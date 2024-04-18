@@ -30,8 +30,15 @@ function shareRoomsInfo() {
 io.on("connection", (socket) => {
   shareRoomsInfo();
 
-  socket.on("send", async () => {
-    console.log("send");
+  socket.on("send", async (data) => {
+    console.log("send", data);
+
+    const clients = Array.from(io.sockets.adapter.rooms.get(data.roomID) || []);
+
+    clients.map((i) => {
+      io.to(i).emit("eventSend", { msg: data.message, userId: data.id });
+    });
+
     // const post = await pool.query(
     //   `INSERT INTO public."Message"(id, text, type, "meetingId", "testId") values($1,$2,$3,$4,$5)`,
     //   [
@@ -42,7 +49,7 @@ io.on("connection", (socket) => {
     //     "clrxsd0bg0015vi7ob6ofc7tz",
     //   ]
     // );
-    sendMessage();
+    sendMessage({ meetingId: data.roomID, text: data.message });
   });
 
   socket.on(ACTIONS.JOIN, (config) => {
@@ -54,6 +61,8 @@ io.on("connection", (socket) => {
     }
 
     const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+
+    console.log(clients, clients);
 
     clients.forEach((clientID) => {
       io.to(clientID).emit(ACTIONS.ADD_PEER, {
