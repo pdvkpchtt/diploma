@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
     const clients = Array.from(io.sockets.adapter.rooms.get(data.roomID) || []);
 
     clients.map((i) => {
-      io.to(i).emit("eventSend", { msg: data.message, userId: data.id });
+      io.to(i).emit("eventSend", { msg: data.message, userId: data.userId });
     });
 
     // const post = await pool.query(
@@ -49,7 +49,11 @@ io.on("connection", (socket) => {
     //     "clrxsd0bg0015vi7ob6ofc7tz",
     //   ]
     // );
-    sendMessage({ meetingId: data.roomID, text: data.message });
+    sendMessage({
+      meetingId: data.roomID,
+      text: data.message,
+      userId: data.userId,
+    });
   });
 
   socket.on(ACTIONS.JOIN, (config) => {

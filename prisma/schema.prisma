@@ -73,6 +73,7 @@ model User {
   Company    Company?
   HR         Hr[]
   Meeting    Meeting[]
+  Message    Message[]
 
   planId String?
   plan   Plan?   @relation(fields: [planId], references: [id])
@@ -81,13 +82,13 @@ model User {
 }
 
 model Plan {
-  id                String @id @default(cuid())
-  name              String
-  generations      Int
+  id           String @id @default(cuid())
+  name         String
+  generations  Int
   // superPitchesCount Int
-  durationDays      Int    @default(0)
-  price             Int    @default(0)
-  User              User[]
+  durationDays Int    @default(0)
+  price        Int    @default(0)
+  User         User[]
 }
 
 model EducationLevel {
@@ -146,24 +147,25 @@ model Meeting {
   createdAt DateTime  @default(now())
   endedAt   DateTime?
   creatorId String
-  creator   Company      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creator   Company   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   studentId String
   student   User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
   vacancyId String
-  Vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  Vacancy   Vacancy   @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
   hrCreator String
   Message   Message[]
 }
 
 model Message {
-  id        String    @id @default(cuid())
+  id        String  @id @default(cuid())
   text      String?
   type      String
   meetingId String
-  Meeting   Meeting   @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  Meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
   testId    String?
-  Test      Test?      @relation(fields: [testId], references: [id], onDelete: Cascade)
-  author    String?
+  Test      Test?   @relation(fields: [testId], references: [id], onDelete: Cascade)
+  authorId  String?
+  Author    User?   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Vacancy {
@@ -214,29 +216,29 @@ model Vacancy {
 }
 
 model VacTests {
-  id        String    @id @default(cuid())
+  id        String  @id @default(cuid())
   vacancyId String
   Vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
   testId    String
-  Test      Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+  Test      Test    @relation(fields: [testId], references: [id], onDelete: Cascade)
 }
 
 // test
 model Test {
-  id        String          @id @default(cuid())
+  id        String     @id @default(cuid())
   questions Question[]
   VacTests  VacTests[]
   companyId String
-  Company   Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  Company   Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
   areaId    String
-  Area      Area            @relation(fields: [areaId], references: [id], onDelete: Cascade)
-  createdAt DateTime        @default(now())
-  type      String          @default("hand")
+  Area      Area       @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  type      String     @default("hand")
   Message   Message[]
 }
 
 model Question {
-  id      String      @id @default(cuid())
+  id      String   @id @default(cuid())
   text    String
   answers Answer[]
   testId  String
@@ -244,7 +246,7 @@ model Question {
 }
 
 model Answer {
-  id          String      @id @default(cuid())
+  id          String   @id @default(cuid())
   text        String
   rightAnswer Boolean
   questionId  String
