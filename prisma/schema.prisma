@@ -73,7 +73,6 @@ model User {
   Company    Company?
   HR         Hr[]
   Meeting    Meeting[]
-  Message    Message[]
 
   planId String?
   plan   Plan?   @relation(fields: [planId], references: [id])
@@ -164,8 +163,8 @@ model Message {
   Meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
   testId    String?
   Test      Test?   @relation(fields: [testId], references: [id], onDelete: Cascade)
-  authorId  String?
-  Author    User?   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now())
+
 }
 
 model Vacancy {

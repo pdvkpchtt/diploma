@@ -2,8 +2,8 @@
 
 import { getMessages } from "./getMessages";
 
-export async function fetchMessages(id, cursor) {
-  const data = await getMessages(id, cursor);
+export async function fetchMessages(id) {
+  const data = await getMessages(id);
 
   return data;
 }

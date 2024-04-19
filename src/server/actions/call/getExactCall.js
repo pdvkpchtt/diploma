@@ -14,6 +14,7 @@ export const getExactCall = async (id) => {
       createdAt: true,
       Vacancy: {
         select: {
+          id: true,
           name: true,
           VacTests: {
             select: {

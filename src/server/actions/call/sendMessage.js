@@ -8,7 +8,7 @@ const sendMessage = async ({ meetingId, text, userId, testId = null }) => {
       data: {
         Meeting: { connect: { id: meetingId } },
         Test: { connect: { id: "clrxsd0bg0015vi7ob6ofc7tz" } },
-        text: text + "^^" + userId,
+        text: text + "^^" + userId + "^^" + new Date(),
         type: "test",
       },
     });
@@ -16,7 +16,7 @@ const sendMessage = async ({ meetingId, text, userId, testId = null }) => {
     await prisma.Message.create({
       data: {
         Meeting: { connect: { id: meetingId } },
-        text: text + "^^" + userId,
+        text: text + "^^" + userId + "^^" + new Date(),
         type: "text",
       },
     });

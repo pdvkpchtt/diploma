@@ -36,7 +36,10 @@ io.on("connection", (socket) => {
     const clients = Array.from(io.sockets.adapter.rooms.get(data.roomID) || []);
 
     clients.map((i) => {
-      io.to(i).emit("eventSend", { msg: data.message, userId: data.userId });
+      io.to(i).emit("eventSend", {
+        text: data.message + "^^" + data.userId + "^^" + new Date(),
+        type: "text",
+      });
     });
 
     // const post = await pool.query(
