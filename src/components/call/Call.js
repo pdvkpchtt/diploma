@@ -303,7 +303,17 @@ const Call = ({ roomID, role, data, id, VacTests }) => {
                       </div>
                     </div>
                   ) : (
-                    <SolveTestComp testId={i.testId} />
+                    <>
+                      {!role.includes("hr") ? (
+                        <SolveTestComp testId={i.testId} />
+                      ) : (
+                        <div
+                          className={`w-full text-center text-[#f6f6f8] my-[8px] font-medium break-all flex flex-col gap-[24px] rounded-[8px] text-[14px] p-[5px] bg-[#313131]`}
+                        >
+                          Тест для кандидата
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
               ))
