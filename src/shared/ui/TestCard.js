@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 import TextMain from "../Text/TextMain";
@@ -18,7 +18,14 @@ import AiIcon2 from "../icons/AiIcon2";
 import Helper from "./Helper";
 import FullTestModal from "@/components/company/FullTestModal";
 
-const TestCard = ({ item, selectedId, setSelectedId }) => {
+const TestCard = ({
+  item,
+  selectedId,
+  setSelectedId,
+  selectFunc = () => {},
+  select,
+}) => {
+  const pathname = usePathname();
   const router = useRouter();
 
   const [isOpen, toggle] = useState(false);
@@ -56,9 +63,14 @@ const TestCard = ({ item, selectedId, setSelectedId }) => {
                 <div className="flex flex-row gap-[8px] w-full">
                   <div
                     className="h-[67px] w-[67px] max-h-[67px] cursor-pointer max-w-[67px] min-h-[67px] min-w-[67px] aspect-square overflow-hidden  rounded-full"
-                    onClick={() =>
-                      router.push(`/companyproflie/${item.Company.username}`)
-                    }
+                    onClick={() => {
+                      if (pathname.includes("call")) {
+                        if (select.find((i) => i === item.id) == undefined)
+                          selectFunc([...select, item.id]);
+                        else selectFunc(select.filter((i) => i !== item.id));
+                      } else
+                        router.push(`/companyproflie/${item.Company.username}`);
+                    }}
                   >
                     {item.Company.image ? (
                       <Image
@@ -79,14 +91,27 @@ const TestCard = ({ item, selectedId, setSelectedId }) => {
                     <TextMain
                       text={`Тест ${item.id}`}
                       style="font-medium text-[16px] w-fit cursor-pointer leading-[19.2px] tracking-[-0.015em]"
-                      onClick={() => setSelectedId(item.id)}
+                      onClick={() => {
+                        if (pathname.includes("call")) {
+                          if (select.find((i) => i === item.id) == undefined)
+                            selectFunc([...select, item.id]);
+                          else selectFunc(select.filter((i) => i !== item.id));
+                        } else setSelectedId(item.id);
+                      }}
                     />
                     <TextSecondary
                       text={"@" + item.Company.username}
                       style="font-medium text-[14px] w-fit cursor-pointer leading-[18px] tracking-[-0.015em]"
-                      onClick={() =>
-                        router.push(`/companyproflie/${item.Company.username}`)
-                      }
+                      onClick={() => {
+                        if (pathname.includes("call")) {
+                          if (select.find((i) => i === item.id) == undefined)
+                            selectFunc([...select, item.id]);
+                          else selectFunc(select.filter((i) => i !== item.id));
+                        } else
+                          router.push(
+                            `/companyproflie/${item.Company.username}`
+                          );
+                      }}
                     />
                     <TextSecondary
                       text={

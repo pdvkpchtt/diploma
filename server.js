@@ -38,7 +38,8 @@ io.on("connection", (socket) => {
     clients.map((i) => {
       io.to(i).emit("eventSend", {
         text: data.message + "^^" + data.userId + "^^" + new Date(),
-        type: "text",
+        type: data.testId ? "test" : "text",
+        testId: data.testId,
       });
     });
 
@@ -52,11 +53,19 @@ io.on("connection", (socket) => {
     //     "clrxsd0bg0015vi7ob6ofc7tz",
     //   ]
     // );
-    sendMessage({
-      meetingId: data.roomID,
-      text: data.message,
-      userId: data.userId,
-    });
+    if (data.testId)
+      sendMessage({
+        meetingId: data.roomID,
+        text: data.message,
+        userId: data.userId,
+        testId: data.testId,
+      });
+    else
+      sendMessage({
+        meetingId: data.roomID,
+        text: data.message,
+        userId: data.userId,
+      });
   });
 
   socket.on(ACTIONS.JOIN, (config) => {

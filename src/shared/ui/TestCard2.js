@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 import TextMain from "../Text/TextMain";
@@ -139,7 +139,7 @@ const TestCard2 = ({
                     }}
                   />
                   <TextSecondary
-                    text={"Прикрепить к вакансии"}
+                    text={"Прикрепить тест"}
                     style="font-medium text-[14px] select-none leading-[16.8px] tracking-[-0.013em]"
                   />
                 </div>

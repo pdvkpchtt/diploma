@@ -16,6 +16,7 @@ import TextSecondary from "@/shared/Text/TextSecondary";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import TestModal from "./TestModal";
+import SolveTestComp from "./SolveTestComp";
 dayjs.extend(relativeTime);
 require("dayjs/locale/ru");
 dayjs.locale("ru");
@@ -185,6 +186,8 @@ const Call = ({ roomID, role, data, id, VacTests }) => {
     getData();
   }, []);
 
+  console.log(msgData);
+
   return (
     <>
       <div className="flex max-h-screen max-w-screen h-screen w-full">
@@ -275,28 +278,34 @@ const Call = ({ roomID, role, data, id, VacTests }) => {
               </div>
             ) : (
               msgData.map((i, key) => (
-                <div
-                  className={`flex flex-row ${
-                    i.text.split("^^")[1] === id
-                      ? "justify-end"
-                      : "justify-start"
-                  }`}
-                >
-                  <div
-                    key={key}
-                    className={`text-[#f6f6f8] font-medium break-all flex flex-col rounded-[8px] text-[14px] p-[5px] w-fit ${
-                      i.text.split("^^")[1] === id
-                        ? "bg-[#5875e8]"
-                        : "bg-[#313131]"
-                    }`}
-                  >
-                    {i.text.split("^^")[0]}
-                    {/* <TextSecondary
+                <>
+                  {i.type === "text" ? (
+                    <div
+                      className={`flex flex-row ${
+                        i.text.split("^^")[1] === id
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
+                      <div
+                        key={key}
+                        className={`text-[#f6f6f8] font-medium break-all flex flex-col rounded-[8px] text-[14px] p-[5px] w-fit ${
+                          i.text.split("^^")[1] === id
+                            ? "bg-[#5875e8]"
+                            : "bg-[#313131]"
+                        }`}
+                      >
+                        {i.text.split("^^")[0]}
+                        {/* <TextSecondary
                     text={dayjs(i.text.split("^^")[2]).format("hh:mm")}
                     style="font-medium text-[12px] text-end"
                   /> */}
-                  </div>
-                </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <SolveTestComp testId={i.testId} />
+                  )}
+                </>
               ))
             )}
           </div>
@@ -344,6 +353,16 @@ const Call = ({ roomID, role, data, id, VacTests }) => {
       </div>
 
       <TestModal
+        onClick={(testIdVal) => {
+          if (testIdVal.length > 0)
+            socket.emit("send", {
+              message: "test",
+              roomID: roomID,
+              userId: id,
+              testId: testIdVal,
+            });
+          setModal(false);
+        }}
         modalState={modal}
         setModalState={() => setModal(false)}
         VacTests={VacTests}

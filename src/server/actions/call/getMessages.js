@@ -9,7 +9,7 @@ export const getMessages = async (id) => {
       id: true,
       text: true,
       type: true,
-      Test: true,
+      testId: true,
     },
   });
 

@@ -14,21 +14,22 @@ import Cross2 from "../../shared/icons/Cross2";
 import TestCard3 from "@/shared/ui/TestCard3";
 import TextMain from "@/shared/Text/TextMain";
 import { LayoutGroup } from "framer-motion";
+import TestCard2 from "@/shared/ui/TestCard2";
+import TestCard from "@/shared/ui/TestCard";
+import TestCard4 from "@/shared/ui/TestCard4";
+import { ButtonPrimary } from "@/shared/ui/Button";
 
 const TestModal = ({
   modalState = false,
   setModalState = () => {},
   VacTests,
+  onClick = () => {},
 }) => {
-  console.log(VacTests);
   const [selectedId, setSelectedId] = useState(null);
+  const [arr, setArr] = useState("");
   return (
     <>
-      <Modal
-        withScroll
-        isOpen={modalState}
-        handleClose={() => setModalState(false)}
-      >
+      <Modal isOpen={modalState} handleClose={() => setModalState(false)}>
         {/* header */}
         <div className="flex flex-row justify-end pb-[12px] relative">
           <Cross2 onClick={() => setModalState(false)} />
@@ -38,20 +39,27 @@ const TestModal = ({
         {/* header */}
 
         {/* body */}
-        <div className="h-[371px] mt-[12px] flex flex-col gap-[12px]">
+        <div className="h-fit mt-[12px] flex flex-col gap-[12px]">
           <LayoutGroup>
             <TextMain
-              text={"Тесты"}
-              style="font-semibold text-[14px] w-full leading-[18px] mb-[-12px] tracking-[-0.182px]"
+              text={"Выберите тесты"}
+              style="font-semibold mb-[8px] text-[14px] w-full leading-[18px] mb-[-12px] tracking-[-0.182px]"
             />
             <div className="flex flex-col gap-[12px] w-full">
               {VacTests?.map((item, key) => (
-                <TestCard3
+                <TestCard4
+                  selectFunc={(vall) => setArr(vall)}
+                  select={arr}
                   item={item.Test}
                   selectedId={selectedId}
                   setSelectedId={setSelectedId}
                 />
               ))}
+              <ButtonPrimary
+                text="Отправить тест"
+                style="mt-[12px]"
+                onClick={() => onClick(arr)}
+              />
             </div>
           </LayoutGroup>
         </div>
