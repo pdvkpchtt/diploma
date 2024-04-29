@@ -143,3 +143,19 @@ input[type="number"] {
     transform: rotate(360deg);
   }
 }
+
+canvas {
+  margin-top: 36px;
+  top: 0;
+  position: absolute;
+}
+
+.mockup {
+  margin-top: 60px;
+  position: relative;
+  display: grid;
+  max-height: 100%;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+}
